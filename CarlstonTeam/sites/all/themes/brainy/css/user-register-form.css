@@ -1,0 +1,20 @@
+/* CUSTOM USER REGISTRATION FORM CSS */
+
+.pane-title {
+	display: none;
+}
+#edit-field-mailing-address-und-0 {
+	border: none;
+}
+#edit-field-mailing-address-und-0 > legend {
+	display: none;
+}
+.street-block {
+	display: none;
+}
+.form-item-field-mailing-address-und-0-locality {
+	display: none;
+}
+.form-item-field-mailing-address-und-0-postal-code {
+	display: none;
+}

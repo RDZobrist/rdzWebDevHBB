@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	url = ssh://codeserver.dev.69e37ca9-e5b8-42b6-9fb3-d4e511a45ab2@codeserver.dev.69e37ca9-e5b8-42b6-9fb3-d4e511a45ab2.drush.in:2222/~/repository.git
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master

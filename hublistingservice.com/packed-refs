@@ -1,0 +1,8 @@
+# pack-refs with: peeled 
+9cb40ede3599adb517927753bf3e8af692faedb5 refs/remotes/origin/apc_css_js
+86187a486e5e1e0ca054f0c8488813f6a8288ec4 refs/remotes/origin/hyperion
+1b70acb704889fd98b40a01bbd16538574b0374e refs/remotes/origin/hyperion-clean
+91e1c692582f158df45c9f4edabf01709d064cf6 refs/remotes/origin/master
+ffec7f93c40c89164b4b350add2a2931d6ac5195 refs/remotes/origin/resurrection-support
+765c223f75d9351e10fe46a8defb94c41ce3b9b4 refs/remotes/origin/update-email
+aedbed1d6cd0d554ddc9ede00855bbaef72ab128 refs/tags/pantheon.initialize

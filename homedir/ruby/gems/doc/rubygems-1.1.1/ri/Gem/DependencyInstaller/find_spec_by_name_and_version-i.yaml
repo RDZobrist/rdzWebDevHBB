@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Gem::DependencyInstaller#find_spec_by_name_and_version
+is_singleton: false
+name: find_spec_by_name_and_version
+params: (gem_name, version = Gem::Requirement.default)
+visibility: public

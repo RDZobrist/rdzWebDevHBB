@@ -1,0 +1,39 @@
+head	1.2;
+access;
+symbols;
+locks
+	voolamed:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2014.12.11.17.41.32;	author voolamed;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.12.11.17.41.32;	author voolamed;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@"Modified by /usr/local/cpanel/cpanel "
+@
+text
+@webmaster:$6$WGUKg5OZDet5diEm$eeD.5J0KxWGpOIlnRrU/uvuf7V4uCqwRd8Ib7TEz0A9.iDRATfRmgGJlzEFbMjkhrq68WgUHMsiRXQThev.j41:16415::::::
+@
+
+
+1.1
+log
+@"Modified by /usr/local/cpanel/cpanel "
+@
+text
+@d1 1
+@

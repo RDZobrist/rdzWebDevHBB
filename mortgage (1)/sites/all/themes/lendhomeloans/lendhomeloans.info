@@ -1,0 +1,22 @@
+name = lendhomeloans 
+description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. 
+base theme = kalatheme 
+core = 7.x 
+
+
+regions[header_top_right_top] = Header Top Right Top
+regions[header_top_right_bottom] = Header Top Right Bottom
+regions[header_middle_top] = Header Middle Top
+regions[content] = Content
+regions[footer_left] = Footer left
+regions[footer_right_top] = Footer Right Top
+regions[footer_right_bottom] = Footer Right Bottom
+regions[footer_bottom] = Footer Bottom
+regions[page_bottom_region] = Page Bottom
+
+stylesheets[all][] = css/main.css 
+stylesheets[all][] = css/styles.css 
+
+stylesheets[all][] = css\bootstrap-theme.css
+stylesheets[all][] = css\bootstrap-theme.min.css
+scripts[] = js\config.json

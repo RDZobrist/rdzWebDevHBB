@@ -1,0 +1,240 @@
+<?php
+/**
+ * @file
+ * Define any common functionality here.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function lendhomeloans_common_block_info() {
+  $block = array();
+  $block['copywrite'] = array(
+    'info' => t('Copywrite information'),
+  );
+  return $block;
+}
+
+
+/**
+* Implements hook_block_view().
+*/
+function lendhomeloans_common_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'copywrite':
+      $block['subject'] = '';
+      $block['content'] = lendhomeloans_common_copywrite_information();
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * block content callback.
+ */
+function lendhomeloans_common_copywrite_information() {
+  $year = date("Y");
+  $text = t('Copyright &#169; @year Augusta Lending. All Rights Reserved, 852 Main Street, Pleasant Grave, Utah, 84062 Phone: (801) 548-2627 Email:
+   (jeff@carlstonteam.com) In accordance with Section 326 of the USA PATRIOT Act of 2001, Augusta Lending is required to obtain a copy of documents used
+    in the identifying our new account customers. This notice is being provided to you for adequate notice given under this act.', array('@year' => $year));
+  return $text;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function lendhomeloans_common_form_alter(&$form, &$form_state, $form_id) {
+      if ($form_id == 'webform_client_form_1') {  // Targets the specific form.      
+        $form['actions']['submit']['#weight'] = -10; // Set this until your button is in the right place. You can include negative integers.
+        $form['actions']['draft']['#weight'] = -10; // Set this until your button is in the right place. You can include negative integers.
+        $form['actions']['previous']['#weight'] = -10; // Set this until your button is in the right place. You can include negative integers.
+        $form['actions']['next']['#weight'] = -10; // Set this until your button is in the right place. You can include negative integers.
+      } 
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function lendhomeloans_common_menu(){
+	$item['new-mortgage-application'] = array(
+      'title' => '',
+      'page callback' => 'new_mortgagae_application',
+      'access callback' => TRUE,
+    );
+    $item['returning-clients'] = array(
+      'title' => '',
+      'page callback' => 'returning_clients',
+      'access callback' => TRUE,
+    );
+    return $item;
+}
+
+
+function new_mortgagae_application() {
+  $output = '<div class="application-steps row">
+        <div class="steps col-sm-12">
+          <div class="one step col-sm-4">
+            <div class="step-num col-sm-3">1</div>
+            <div class="col-sm-9 text">
+              <div class="step-num-text">Step One:</div>
+              <div class="step-text">' . t('Loan Application') . '</div>
+            </div>
+          </div>
+          <div class="two step col-sm-4">
+            <div class="step-num col-sm-3">2</div>
+            <div class="col-sm-9 text">
+            <div class="step-num-text">Step Two:</div>
+            <div class="step-text">' . t('Credit Authorization') . '</div>
+            </div>
+          </div>
+          <div class="three step col-sm-4">
+            <div class="step-num col-sm-3">3</div>
+            <div class="col-sm-9 text">
+              <div class="step-num-text">Step Three:</div>
+              <div class="step-text">' . t('Documentation') . '</div>
+            </div>
+          </div>
+        </ul>
+      </div>
+  </div>';
+
+ $output .= '<div class="row">
+ 			  <div class="col-sm-3">
+ 			  </div>
+ 			  <div class="col-sm-9">
+ 			      <div class="col-sm-9 explain-text">
+ 			      ' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you. And you can always save your work and come back and complete it late if you need to.") . '
+ 			      </div>
+ 			      <div class="col-sm-3">
+ 			        <h3>' . t('Secure Connection'). '</h3>
+ 			      </div>
+ 			      <div class="re-clients">
+ 			       <span  class="returning-client">' . t('If you are a returning client,'). '</span>
+ 			       <span>' . l(t('click here to login'), '/returning-clients') . '</span>
+ 			      </div>
+ 			      <div class="form-header new-mortgage-form-header"><span class="form-header-text">New Mortgage Aplication</span></div>';
+ $form = drupal_get_form('new_mortgage_application_form');
+ $output .= drupal_render($form) . '<div class="re-clients re-client-bottom">
+ 			       <span  class="returning-client">' . t('If you are a returning client,'). '</span>
+ 			       <span>' . l(t('click here to login'), '/returning-clients') . '</span>
+ 			      </div></div></div>';			
+
+ return $output; 
+
+}
+
+
+/**
+ * New mortgage application form.
+ */
+function new_mortgage_application_form($form, $form_state) {
+	$form['first_name'] = array(
+      '#prefix' => '<div class="col-sm-6">',
+      '#title' => t('First Name'),
+      '#type' => 'textfield',
+	);
+	$form['last_name'] = array(
+      '#title' => t('Last Name'),
+      '#type' => 'textfield',
+	);
+	$form['phone'] = array(
+      '#title' => t('Phone Number'),
+      '#type' => 'textfield',
+	);
+	$form['email'] = array(
+      '#title' => t('Email'),
+      '#type' => 'email',
+	);
+	$form['password'] = array(
+      '#title' => t('Create Password'),
+      '#type' => 'password',
+      '#maxlength' => 64,
+  	  '#size' => 15,
+	);
+	$form['re-password'] = array(
+      '#title' => t('Re-Type Password'),
+      '#type' => 'password',
+      '#maxlength' => 64,
+  	  '#size' => 15,
+      '#suffix' => '</div>',
+	);
+	$form['staff-member'] = array(
+      '#prefix' => '<div class="col-sm-6">',
+      '#type' => 'select',
+      '#title' => t("Staff memeber you've been in contact with"),
+      '#options' => array(t('Not yet contacted office'))
+	);
+	$form['markup'] = array(
+      '#markup' => '<div class="address details">
+         <h4>Download Mortgagae Application:' . l(t('Click here to download'), '#'). '</h4>
+         <p>' . t('Jeff Carlston') . '</p>
+         <p>' . t('Loan Officer NLMS#:315077') . '</p>
+         <p>' . t('Direct: 801-548-2627') . '</p>
+         <p>' . t('FAX: 1-888-391-9919') . '</p>
+         <p>' . t('EMAIL: jeff@carlstonteam.com') . '</p>
+         <h4>' . t('MAILING ADDRESS:') . '</h4>
+         <p>' . t('Augusta Lending'). '</p>
+         <p>' . t('(Attention: Jeff Carlston)'). '</p>
+         <p>' . t('852 S Main'). '</p>
+         <p>' . t('Pleasant Grave, UT 84062'). '</p>
+        </div></div>',
+	);
+	$form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('SIGN UP'),
+	);
+
+	return $form;
+}
+
+
+function returning_clients() {
+	$output = '<div class="application-steps row">
+        <div class="steps col-sm-12">
+          <div class="one step col-sm-4">
+            <div class="step-num col-sm-3">1</div>
+            <div class="col-sm-9 text">
+              <div class="step-num-text">Step One:</div>
+              <div class="step-text">' . t('Loan Application') . '</div>
+            </div>
+          </div>
+          <div class="two step col-sm-4">
+            <div class="step-num col-sm-3">2</div>
+            <div class="col-sm-9 text">
+            <div class="step-num-text">Step Two:</div>
+            <div class="step-text">' . t('Credit Authorization') . '</div>
+            </div>
+          </div>
+          <div class="three step col-sm-4">
+            <div class="step-num col-sm-3">3</div>
+            <div class="col-sm-9 text">
+              <div class="step-num-text">Step Three:</div>
+              <div class="step-text">' . t('Documentation') . '</div>
+            </div>
+          </div>
+        </ul>
+      </div>
+  </div>';
+
+ $output .= '<div class="row">
+ 			  <div class="col-sm-3">
+ 			  </div>
+ 			  <div class="col-sm-9">
+ 			      <div class="col-sm-9 explain-text">
+ 			      ' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you. And you can always save your work and come back and complete it late if you need to.") . '
+ 			      </div>
+ 			      <div class="col-sm-3">
+ 			        <h3>' . t('Secure Connection'). '</h3>
+ 			      </div>
+ 			      <div class="clearfix">
+ 			      
+ 			      </div>
+ 			      <div class="form-header new-mortgage-form-header"><span class="form-header-text">Returning Client - Existing Mortgage Application</span></div>';
+ $form = drupal_get_form('user_login');
+ $output .= drupal_render($form) . '</div>' ;
+ return $output;
+}

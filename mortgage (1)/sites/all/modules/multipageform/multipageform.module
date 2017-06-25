@@ -1,0 +1,2068 @@
+<?php
+/**
+ * @file
+ * This is the main module file.
+ */
+
+ /**
+ * Implements hook_help().
+ */
+function multipageform_help($path, $arg) {
+  if ($path == 'admin/help#multipageform') {
+    $output = '<h3>' . t('About') . '</h3>';
+    $output .= '<p>' . t('The multipageform module creates a multiple page form.') . '</p>';
+    return $output;
+  }
+}
+
+/**
+* Implementation of hook_menu().
+*/
+function multipageform_menu() {
+  $items['mortgage-application'] = array(
+    'title' => 'Mortgage Application',   
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments'=>array('multipageform_form1'));
+
+  return $items;
+}
+
+
+function multipageform_form1($form, &$form_state) {
+  if(isset($form_state['values'])) {
+    $currstep = $form_state['step'] + 1;
+  }
+  else {
+    $currstep = 0;
+  }
+  $form_state['step'] = $currstep;
+  $allsteps = mortgage_application_form();
+
+  $currform =  $allsteps[$currstep];
+  $last_key = key( array_slice( $allsteps, -1, 1, TRUE ) );
+  return $currform;
+}
+
+function mortgage_application_form() {
+    global $user;
+    $form = array();
+    $step1['form_header'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li class="active">
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step1['progress_step1'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed">Account Section <span>&#10004;</span></li>
+          <li class="active">Borrower Section</li>
+          <li>Employment Section</li>
+          <li> Property Section </li>
+          <li>Monthly Income Section</li>
+          <li>Disclosures Section</li>
+          <li>Additional Questions</li>
+        </ul>',
+    );
+    $block_content = module_invoke('block', 'block_view', '10');
+    $step1['information_step1'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step1['header_text'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p>
+       <p><b>' . t('Additional Mortgaga Application Form:'). '</b></p></div>
+       <div class="additional-forms-desc col-sm-6"><p>' . t('Please download, print, sign and send us these forms with your mortgagae application.') . '</p></div>
+       <div class="additional-forms col-sm-6"><p><span class="help">?</span><a href="#">' . t('Borrower Authorization Form') . '</a></p>
+       <p><span class="help">?</span><a href="#">' .t('Credit Score Disclosure with Credit Score') . '</a></p></div>', 
+    );
+    $step1['type_of_application'] = array(
+      '#type' => 'select',
+      '#title' => t('Type of Mortgage Application'),
+      '#prefix' => '<div class="col-sm-6">',
+      '#options' => array('pa' => t('Purchase Application'), 'ra' => t('Refinance Application')),
+      '#suffix' => '</div></div></div>',
+    );
+    $step1['header_markup_borrower'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step1['submit']= array(
+      '#prefix' => '<div class="buttons">',
+      '#type'=>'submit',
+      '#value'=>t('Next'),
+    );
+    $step1['completed']=array(
+      '#type'=>'button',
+      '#value'=>t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step1['markup_borrower'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step1['fname_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('First Name'),
+      '#prefix' => '<div class = "left-section col-sm-6">',
+      '#default_value' => !empty($session['fname_borrower']) ? $session['fname_borrower'] : '',
+    );
+    $step1['mname_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Middle Initial'),
+      '#default_value' => !empty($session['mname_borrower']) ? $session['mname_borrower'] : '',
+    );
+    $step1['last_name_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=>'<span class="help"><a href="#">?</a></span>' . t('Last name'),
+      '#default_value' => !empty($session['last_name_borrower']) ? $session['last_name_borrower'] : '',
+    );
+    $step1['social_security_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=>'<span class="help"><a href="#">?</a></span>' . t('Social Security # (000-000-0000)'),
+      '#default_value' => !empty($session['social_security_borrower']) ? $session['social_security_borrower'] : '',
+    );
+    $step1['mail_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Email'),
+     // '#required' => TRUE,
+      '#element_validate' => array('multipageform_email_element_validate'),
+      '#default_value' => !empty($session['mail_borrower']) ? $session['mail_borrower'] : '',
+    );
+    $step1['birthdate_borrower']=array(
+      '#type'=>'date',
+      '#title'=>t('Date of Birth'),
+      '#default_value' => !empty($session['birthdate_borrower']) ? $session['birthdate_borrower'] : '',
+    );
+    $step1['home_number_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Home Number'),
+      '#default_value' => !empty($session['home_number_borrower']) ? $session['home_number_borrower'] : '',
+    );
+    $step1['work_number_borrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Work Number'),
+      '#default_value' => !empty($session['work_number_borrower']) ? $session['work_number_borrower'] : '',
+    );
+    $step1['maritial_status_borrower'] = array(
+      '#type'=>'select',
+      '#options' => array('single' => t('Single'), 'married' => t('Married')),
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Maritial Status'),
+      '#default_value' => !empty($session['maritial_status_borrower']) ? $session['maritial_status_borrower'] : '',
+    );
+    $step1['dependent_borrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('# of Dependent under 18'),
+      '#default_value' => !empty($session['dependent_borrower']) ? $session['dependent_borrower'] : '',
+    );
+    $step1['dependent_age_borrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('Dependent Age'),
+      '#default_value' => !empty($session['dependent_age_borrower']) ? $session['dependent_age_borrower'] : '',
+      '#description' => t('Comma Seperated'),
+    );
+    $step1['years_in_school_borrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('Number of years in School'),
+      '#default_value' => !empty($session['years_in_school_borrower']) ? $session['years_in_school_borrower'] : '',
+      '#suffix' => '</div>', 
+    );
+   
+    $step1['fname_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('First Name'),
+      '#prefix' => '<div class = "right-section col-sm-6">', 
+      '#default_value' => (!empty($session['fname_coborrower'])) ? $session['fname_coborrower'] : '',
+    );
+    $step1['mname_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Middle Initial'),
+      '#default_value' => (!empty($session['mname_coborrower'])) ? $session['mname_coborrower'] : '',
+    );
+    $step1['last_name_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=>'<span class="help"><a href="#">?</a></span>' . t('Last name'),
+      '#default_value' => (!empty($session['last_name_coborrower'])) ? $session['last_name_coborrower'] : '',
+    );
+    $step1['social_security_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=>'<span class="help"><a href="#">?</a></span>' . t('Social Security # (000-000-0000)'),
+      '#default_value' => (!empty($session['social_security_coborrower'])) ? $session['social_security_coborrower'] : '',
+    );
+    $step1['mail_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Email'),
+      //'#required' => TRUE,
+      '#default_value' => (!empty($session['mail_coborrower'])) ? $session['mail_coborrower'] : '',
+      '#element_validate' => array('multipageform_email_element_validate'),
+    );
+    $step1['birthdate_coborrower']=array(
+      '#type'=>'date',
+      '#title'=>t('Date of Birth'),
+      '#default_value' => (!empty($session['birthdate_coborrower'])) ? $session['birthdate_coborrower'] : '',
+    );
+    $step1['home_number_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Home Number'),
+      '#default_value' => (!empty($session['home_number_coborrower'])) ? $session['home_number_coborrower'] : '',
+    );
+    $step1['work_number_coborrower'] = array(
+      '#type'=>'textfield',
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Work Number'),
+      '#default_value' => (!empty($session['work_number_coborrower'])) ? $session['work_number_coborrower'] : '',
+    );
+    $step1['maritial_status_coborrower'] = array(
+      '#type'=>'select',
+      '#options' => array('single' => t('Single'), 'married' => t('Married')),
+      '#title'=> '<span class="help"><a href="#">?</a></span>' .t('Maritial Status'),
+      '#default_value' => (!empty($session['maritial_status_coborrower'])) ? $session['maritial_status_coborrower'] : '',
+    );
+    $step1['dependent_coborrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('# of Dependent under 18'),
+      '#default_value' => (!empty($session['dependent_coborrower'])) ? $session['dependent_coborrower'] : '',
+    );
+    $step1['dependent_age_coborrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('Dependent Age'),
+      '#default_value' => (!empty($session['dependent_age_coborrower'])) ? $session['dependent_age_coborrower'] : '',
+      '#description' => t('Comma Seperated'),
+    );
+    $step1['years_in_school_coborrower'] = array(
+      '#type' =>'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' .t('Number of years in School'),
+      '#default_value' => (!empty($session['years_in_school_coborrower'])) ? $session['years_in_school_coborrower'] : '',
+      '#suffix' => '</div></div></div>', 
+    );
+    $step1['address_header_markup'] = array(
+      '#markup'=>'<div class="form-header"><div class="form-header-text">' . t('Address for the Last Two Years') . '</div></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',
+    );
+    $step1['markup_borrower_text'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step1['own_rent_borrower'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Do you own or rent?'),
+      '#options' => array('own' => t('Own'), 'rent' => t('Rent')),
+      '#default_value' => (!empty($session['own_rent_borrower'])) ? $session['own_rent_borrower'] : '',
+      '#prefix' => '<div class="left-section col-sm-6">',
+    );
+    $step1['many_years_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('For how many years?'),
+      '#default_value' => (!empty($session['many_years_borrower'])) ? $session['many_years_borrower'] : '',
+    );
+    $step1['address_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+      '#default_value' => (!empty($session['address_borrower'])) ? $session['address_borrower'] : '',
+    );
+    $step1['city_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['city_borrower'])) ? $session['city_borrower'] : '',
+    );
+    $step1['state_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['state_borrower'])) ? $session['state_borrower'] : '',
+    );
+    $step1['zip_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['zip_borrower'])) ? $session['zip_borrower'] : '',
+      '#suffix' => '</div>',
+    );
+    $step1['own_rent_coborrower'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Do you own or rent?'),
+      '#options' => array('own' => t('Own'), 'rent' => t('Rent')),
+      '#default_value' => (!empty($session['own_rent_coborrower'])) ? $session['own_rent_coborrower'] : '',
+      '#prefix' => '<div class="right-section col-sm-6">',
+    );
+    $step1['many_years_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('For how many years?'),
+      '#default_value' => (!empty($session['many_years_coborrower'])) ? $session['many_years_coborrower'] : '',
+    );
+    $step1['address_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+      '#default_value' => (!empty($session['address_coborrower'])) ? $session['address_coborrower'] : '',
+    );
+    $step1['city_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['city_coborrower'])) ? $session['city_coborrower'] : '',
+    );
+    $step1['state_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['state_coborrower'])) ? $session['state_coborrower'] : '',
+    );
+    $step1['zip_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['zip_coborrower'])) ? $session['zip_coborrower'] : '',
+      '#suffix' => '</div>',
+    );
+    $step1['prev_address_header_markup'] = array(
+      '#markup'=>'<div class="form-header"><div class="form-header-text">' . t('Previous Address if less than Two Years') . '</div></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',
+    );
+    $step1['prev_markup_borrower_text'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step1['prev_own_rent_borrower'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Do you own or rent?'),
+      '#options' => array('own' => t('Own'), 'rent' => t('Rent')),
+      '#default_value' => (!empty($session['prev_own_rent_borrower'])) ? $session['prev_own_rent_borrower'] : '',
+      '#prefix' => '<div class="left-section col-sm-6">',
+    );
+    $step1['prev_many_years_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('For how many years?'),
+      '#default_value' => (!empty($session['prev_many_years_borrower'])) ? $session['prev_many_years_borrower'] : '',
+    );
+    $step1['prev_address_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+      '#default_value' => (!empty($session['prev_address_borrower'])) ? $session['prev_address_borrower'] : '',
+    );
+    $step1['prev_city_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['prev_city_borrower'])) ? $session['prev_city_borrower'] : '',
+    );
+    $step1['prev_state_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['prev_state_borrower'])) ? $session['prev_state_borrower'] : '',
+    );
+    $step1['prev_zip_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['prev_zip_borrower'])) ? $session['prev_zip_borrower'] : '',
+      '#suffix' => '</div>',
+    );
+    $step1['prev_own_rent_coborrower'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Do you own or rent?'),
+      '#options' => array('own' => t('Own'), 'rent' => t('Rent')),
+      '#default_value' => (!empty($session['prev_own_rent_coborrower'])) ? $session['prev_own_rent_coborrower'] : '',
+      '#prefix' => '<div class="right-section col-sm-6">',
+    );
+    $step1['prev_many_years_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('For how many years?'),
+      '#default_value' => (!empty($session['prev_many_years_coborrower'])) ? $session['prev_many_years_coborrower'] : '',
+    );
+    $step1['prev_address_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+      '#default_value' => (!empty($session['prev_address_coborrower'])) ? $session['prev_address_coborrower'] : '',
+    );
+    $step1['prev_city_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['prev_city_coborrower'])) ? $session['prev_city_coborrower'] : '',
+    );
+    $step1['prev_state_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['prev_state_coborrower'])) ? $session['prev_state_coborrower'] : '',
+    );
+    $step1['prev_zip_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['prev_zip_coborrower'])) ? $session['prev_zip_coborrower'] : '',
+      '#suffix' => '</div>',
+    );
+    $step1['mailing_address_header_markup'] = array(
+      '#markup'=>'<div class="form-header"><div class="form-header-text">' . t('Mailing Address, if different from Present address') . '</div></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',
+    );
+    $step1['mailing_markup_borrower_text'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step1['mailing_address_borrower'] = array(
+      '#type' => 'textfield',
+      '#prefix' => '<div class="col-sm-6">',
+      '#default_value' => (!empty($session['mailing_address_borrower'])) ? $session['mailing_address_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step1['mailing_city_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['mailing_city_borrower'])) ? $session['mailing_city_borrower'] : '',
+    );
+    $step1['mailing_state_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['mailing_state_borrower'])) ? $session['mailing_state_borrower'] : '',
+    );
+    $step1['mailing_zip_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['mailing_zip_borrower'])) ? $session['mailing_zip_borrower'] : '',
+      '#suffix' => '</div>',
+    );
+    $step1['mailing_address_coborrower'] = array(
+      '#type' => 'textfield',
+      '#prefix' => '<div class="col-sm-6">',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+      '#default_value' => (!empty($session['mailing_address_coborrower'])) ? $session['mailing_address_coborrower'] : '',
+    );
+    $step1['mailing_city_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+      '#default_value' => (!empty($session['mailing_city_coborrower'])) ? $session['mailing_city_coborrower'] : '',
+    );
+    $step1['mailing_state_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+      '#default_value' => (!empty($session['mailing_state_coborrower'])) ? $session['mailing_state_coborrower'] : '',
+    );
+    $step1['mailing_zip_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('ZIP'),
+      '#default_value' => (!empty($session['mailing_zip_coborrower'])) ? $session['mailing_zip_coborrower'] : '',
+      '#suffix' => '</div></div></div></div></div>',
+    );
+    $form[] = $step1;
+    $step2['form_header_step2'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li>
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step2['progress_step2'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed green">Account Section <span>&#10004;</span></li>
+          <li class="completed green">Borrower Section <span>&#10004;</span></li>
+          <li class="active">Employment Section</li>
+          <li> Property Section </li>
+          <li>Monthly Income Section</li>
+          <li>Disclosures Section</li>
+          <li>Additional Questions</li>
+        </ul>',
+    );
+    
+    $step2['information_step2'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step2['header_text_step2'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p></div>
+       <div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    
+    $step2['header_markup_borrower_step2'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step2['prev_step2'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'button',
+      '#value' => t('Prev'),
+    );
+    $step2['submit_step2']=array(
+      '#type'=>'submit',
+      '#value'=>t('Save/Next'),
+    );
+    $step2['completed_step2'] = array(
+      '#type' => 'button',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step2['markup_borrower_step2'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text clearfix"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step2['self_employed_step2'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Are you self employed?'),
+      '#options' => array('yes' => t('Yes'), 'no' => t('No')),
+      '#default_value' => (!empty($session['self_employed_step2'])) ? $session['self_employed_step2'] : '',
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="col-sm-6 left-section">'
+    );
+    $step2['employer_name_step2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['employer_name_step2'])) ? $session['employer_name_step2'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Name of Employer'),
+    );
+    $step2['address_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['address_borrower'])) ? $session['address_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step2['city_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['city_borrower'])) ? $session['city_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+    );
+    $step2['state_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['state_borrower'])) ? $session['state_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+    );
+    $step2['zip_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['zip_borrower'])) ? $session['zip_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Zip Code'),
+    );
+    $step2['work_phone_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['work_phone_borrower'])) ? $session['work_phone_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Work Phone'),
+    );
+    $step2['position_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['position_borrower'])) ? $session['position_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Position or Title'),
+      '#suffix' => '</div>',
+    );
+    $step2['self_employed_step2_right'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Are you self employed?'),
+      '#options' => array('yes' => t('Yes'), 'no' => t('No')),
+      '#default_value' => (!empty($session['self_employed_step2_right'])) ? $session['self_employed_step2_right'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">'
+    );
+    $step2['employer_name_step2_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['employer_name_step2_right'])) ? $session['employer_name_step2_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Name of Employer'),
+    );
+    $step2['address_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['address_borrower_right'])) ? $session['address_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step2['city_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['city_borrower_right'])) ? $session['city_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+    );
+    $step2['state_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['state_borrower_right'])) ? $session['state_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+    );
+    $step2['zip_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['zip_borrower_right'])) ? $session['zip_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Zip Code'),
+    );
+    $step2['work_phone_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['work_phone_borrower_right'])) ? $session['work_phone_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Work Phone'),
+    );
+    $step2['position_borrower_right'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['position_borrower_right'])) ? $session['position_borrower_right'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Position or Title'),
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['time_with_employer'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('For how many year and months have you worked with this employer?') . '</div>',
+    );
+    $step2['time_with_employer_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['time_with_employer_borrower'])) ? $session['time_with_employer_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['time_with_employer_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['time_with_employer_coborrower'])) ? $session['time_with_employer_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['time_this_line_employer'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('For how many year have you been in this line of work?') . '</div>',
+    );
+    $step2['time_this_line_employer_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['time_this_line_employer_borrower'])) ? $session['time_this_line_employer_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['time_this_line_employer_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['time_this_line_employer_coborrower'])) ? $session['time_this_line_employer_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['more_position_header_step2'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('If employed in current position for less than 2 years or 
+        if current employed in more than one position, complete the following:') . '</span><span class="header-text-small">' . t('More than 3 previous employers let us know') . '</span></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step2['borrower_coborrower_step2'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step2['were_self_employed_step2'] = array(
+      '#type' => 'select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Were you self employed?'),
+      '#options' => array('yes' => t('Yes'), 'no' => t('No')),
+      '#default_value' => (!empty($session['were_self_employed_step2'])) ? $session['were_self_employed_step2'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">'
+    );
+    $step2['past_employer_name_step2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_employer_name_step2'])) ? $session['past_employer_name_step2'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Name of Employer'),
+    );
+    $step2['from_date_borrower'] = array(
+      '#type' => 'date',
+      '#default_value' => (!empty($session['from_date_borrower'])) ? $session['from_date_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Dates(from/to)'),
+    );
+    $step2['to_date_borrower'] = array(
+      '#type' => 'date',
+      '#default_value' => (!empty($session['to_date_borrower'])) ? $session['to_date_borrower'] : '',
+    );
+    $step2['past_address_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_address_borrower'])) ? $session['past_address_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step2['past_city_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_city_borrower'])) ? $session['past_city_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+    );
+    $step2['past_state_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_state_borrower'])) ? $session['past_state_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+    );
+    $step2['past_zip_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_zip_borrower'])) ? $session['past_zip_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Zip Code'),
+    );
+    $step2['past_work_phone_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_work_phone_borrower'])) ? $session['past_work_phone_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Work Phone'),
+    );
+    $step2['past_position_borrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_position_borrower'])) ? $session['past_position_borrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Position or Title'),
+      '#suffix' => '</div>',
+    );
+    $step2['were_self_employed_coborrower_step2'] = array(
+      '#type' => 'select',
+      '#default_value' => (!empty($session['were_self_employed_coborrower_step2'])) ? $session['were_self_employed_coborrower_step2'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Were you self employed?'),
+      '#options' => array('yes' => t('Yes'), 'no' => t('No')),
+      '#prefix' => '<div class="col-sm-6 left-section">'
+    );
+    $step2['past_employer_name_coborrower_step2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_employer_name_coborrower_step2'])) ? $session['past_employer_name_coborrower_step2'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Name of Employer'),
+    );
+    $step2['from_date_coborrower'] = array(
+      '#type' => 'date',
+      '#default_value' => (!empty($session['from_date_coborrower'])) ? $session['from_date_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Dates(from/to)'),
+    );
+    $step2['to_date_coborrower'] = array(
+      '#type' => 'date',
+      '#default_value' => (!empty($session['to_date_coborrower'])) ? $session['to_date_coborrower'] : '',
+    );
+    $step2['past_address_coborrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_address_coborrower'])) ? $session['past_address_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step2['past_city_coborrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_city_coborrower'])) ? $session['past_city_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+    );
+    $step2['past_state_coborrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_state_coborrower'])) ? $session['past_state_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+    );
+    $step2['past_zip_coborrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_zip_coborrower'])) ? $session['past_zip_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Zip Code'),
+    );
+    $step2['past_work_phone_coborrower'] = array(
+      '#type' => 'textfield',
+      '#default_value' => (!empty($session['past_work_phone_coborrower'])) ? $session['past_work_phone_coborrower'] : '',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Work Phone'),
+    );
+    $step2['past_position_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Position or Title'),
+      '#default_value' => (!empty($session['past_position_coborrower'])) ? $session['past_position_coborrower'] : '',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['more_postion_time_with_employer'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('For how many year and months have you worked with this employer?') . '</div>',
+    );
+    $step2['more_postion_time_with_employer_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['more_postion_time_with_employer_borrower'])) ? $session['more_postion_time_with_employer_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['more_postion_time_with_employer_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['more_postion_time_with_employer_coborrower'])) ? $session['more_postion_time_with_employer_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['more_postion_time_this_line_employer'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('For how many year have you been in this line of work?') . '</div>',
+    );
+    $step2['more_postion_time_this_line_employer_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['more_postion_time_this_line_employer_borrower'])) ? $session['more_postion_time_this_line_employer_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['more_postion_time_this_line_employer_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['more_postion_time_with_employer_coborrower'])) ? $session['more_postion_time_with_employer_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['gross_income_no_overtime'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('Gross Monthly Income with no overtime') . '</div>',
+    );
+    $step2['gross_income_no_overtime_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['gross_income_no_overtime_borrower'])) ? $session['gross_income_no_overtime_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['gross_income_no_overtime_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['gross_income_no_overtime_coborrower'])) ? $session['gross_income_no_overtime_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div>',
+    );
+    $step2['gross_income_overtime'] = array(
+      '#markup' => '<div class="row"><div class="col-sm-12"><div><span class="help"><a href="#">?</a></span>' . t('Gross Monthly Income with overtime') . '</div>',
+    );
+    $step2['gross_income_overtime_borrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Borrower'),
+      '#default_value' => (!empty($session['gross_income_overtime_borrower'])) ? $session['gross_income_overtime_borrower'] : '',
+      '#prefix' => '<div class="col-sm-6 left-section">',
+      '#suffix' => '</div>',
+    );
+    $step2['gross_income_overtime_coborrower'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Co-Borrower'),
+      '#default_value' => (!empty($session['gross_income_overtime_coborrower'])) ? $session['gross_income_overtime_coborrower'] : '',
+      '#prefix' => '<div class="col-sm-6 right-section">',
+      '#suffix' => '</div></div></div></div></div>',
+    );
+    $form[] = $step2;
+    $step3['form_header_step3'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li class="active">
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step3['progress_step3'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed green">Account Section <span>&#10004;</span></li>
+          <li class="completed green">Borrower Section <span>&#10004;</span></li>
+          <li class="completed green">Employment Section <span>&#10004;</span></li>
+          <li class="active"> Property Section </li>
+          <li>Monthly Income Section</li>
+          <li>Disclosures Section</li>
+          <li>Additional Questions</li>
+        </ul>',
+    );
+    $step3['information_step3'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step3['header_text_step3'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p></div>
+       <div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    
+    $step3['header_markup_step3'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step3['prev_step3'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'button',
+      '#value' => t('Prev'),
+    );
+    $step3['submit_step3']=array(
+      '#type'=>'submit',
+      '#value'=>t('Save/Next'),
+    );
+    $step3['completed_step3'] = array(
+      '#type' => 'button',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step3['markup_property_step3'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header">' . t('About Property') . '</h4></div>',
+    );
+    $step3['loan_purpose'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Which best describes the purpose of your loan?'),
+      '#type' => 'checkboxes',
+      '#options' => drupal_map_assoc(array(
+        t("Purchasing a home I've already found."),
+        t("Purchasing a home that I haven't located yet."),
+        t('Refinance my existing loan balance'),
+        t('Construction'),
+        t('Construction Permanent'),
+        t('Other')
+    )));
+    $step3['other_loan_purpose'] = array(
+      '#type' => 'textarea',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Explain if other'),
+    );
+    $step3['purchase_price'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Desired Purchase Price'),
+      '#suffix' => '</div></div></div>',
+    );
+    $form[] = $step3;
+    $step4['form_header_step4'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li>
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step4['progress_step4'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed green">Account Section <span>&#10004;</span></li>
+          <li class="completed green">Borrower Section <span>&#10004;</span></li>
+          <li class="completed green">Employment Section <span>&#10004;</span></li>
+          <li class="completed green"> Property Section <span>&#10004;</span></li>
+          <li class="active">Monthly Income Section</li>
+          <li>Disclosures Section</li>
+          <li>Additional Questions</li>
+        </ul>',
+    );
+    $step4['information_step4'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step4['header_text_step4'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p></div>
+       <div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    
+    $step4['header_markup_step4'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step4['prev_step4'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'button',
+      '#value' => t('Prev'),
+    );
+    $step4['submit_step4']=array(
+      '#type'=>'submit',
+      '#value'=>t('Save/Next'),
+    );
+    $step4['completed_step4'] = array(
+      '#type' => 'button',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step4['monthly_income_desc'] = array(
+      '#markup' => '<div class="desc"><h4>' . t('Joint Statement of Assets and Liabilities') . '<h4>'
+       . t('The Schedules of assets and liabilities may be completed jointly by both married and unmarried co-borrowers if their assests and liabilities are
+        sufficiently joined so that the statement can be meaningfully and fairly presented on a combined basis, otherwise seprate statements and schedules
+        are required. If the Co-Borrower section was completed about a non-applicant spouse or other person, this statement and supporting schedules must be 
+        completed by that spouse or that person also.') . '</div>',
+    );
+    $step4['list_your_assets'] = array(
+      '#title' => t('Would you like to list your assets and liabilities jointly or separately?'),
+      '#type' => 'checkboxes',
+      '#options' => drupal_map_assoc(array(t('Jointly'), t('Separately'))),
+    );
+    $step4['monthly_income_step4'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Information') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Information') . '</h4></div>',
+    );
+    $step4['basic_monthly_income_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Basic Monthly Income'),
+      '#type' => 'textfield',
+      '#prefix' => '<div class="left-section col-sm-6">'
+    );
+    $step4['monthly_income_overtime_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Overtime Pay'),
+      '#type' => 'textfield',
+    );
+    $step4['monthly_bonuses_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Bonuses'),
+      '#type' => 'textfield',
+    );
+    $step4['monthly_commisions_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Commisions'),
+      '#type' => 'select',
+      '#options' => array('5%', '10%', '15%'),
+    );
+    $step4['monthly_dividends_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Dividends/Interest Income'),
+      '#type' => 'textfield',
+    );
+    $step4['other_income_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Other Income'),
+      '#type' => 'textfield',
+    );
+    $step4['total_monthly_income_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Total Monthly Income'),
+      '#type' => 'textfield',
+    );
+    $step4['desc_other_income_borrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Description of other Income'),
+      '#type' => 'textarea',
+      '#suffix' => '</div>',
+    );
+    $step4['basic_monthly_income_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Basic Monthly Income'),
+      '#type' => 'textfield',
+      '#prefix' => '<div class="right-section col-sm-6">'
+    );
+    $step4['monthly_income_overtime_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Overtime Pay'),
+      '#type' => 'textfield',
+    );
+    $step4['monthly_bonuses_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Bonuses'),
+      '#type' => 'textfield',
+    );
+    $step4['monthly_commisions_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Commisions'),
+      '#type' => 'select',
+      '#options' => array('5%', '10%', '15%'),
+    );
+    $step4['monthly_dividends_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Monthly Dividends/Interest Income'),
+      '#type' => 'textfield',
+    );
+    $step4['other_income_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Other Income'),
+      '#type' => 'textfield',
+    );
+    $step4['total_monthly_income_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Total Monthly Income'),
+      '#type' => 'textfield',
+    );
+    $step4['desc_other_income_coborrower'] = array(
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Description of other Income'),
+      '#type' => 'textarea',
+      '#suffix' => '</div>',
+    );
+    $step4['notice'] = array(
+      '#markup' => '<div class="notice">' . t('*Notice: Alimony, child support, or separate maintainence income need not be revealed if the Borrower or Co-Borrower
+       does not choose to have it considered for repaying this loan.') . '<h3>' . t('Borrower-Combined Housing') . '</h3> <div class="combined-desc">' . t('The Schedules of assets and liabilities may be completed jointly by both married and unmarried co-borrowers if their assests and liabilities are
+        sufficiently joined so that the statement can be meaningfully and fairly presented on a combined basis, otherwise seprate statements and schedules
+        are required. If the Co-Borrower section was completed about a non-applicant spouse or other person, this statement and supporting schedules must be 
+        completed by that spouse or that person also.') . '</div></div></div></div>',
+    );
+    $form[] = $step4;
+    $step5['form_header_step5'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li class="active">
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step5['progress_step5'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed green">Account Section <span>&#10004;</span></li>
+          <li class="completed green">Borrower Section <span>&#10004;</span></li>
+          <li class="completed green">Employment Section <span>&#10004;</span></li>
+          <li class="completed green"> Property Section <span>&#10004;</span></li>
+          <li class="completed green">Monthly Income Section <span>&#10004;</span></li>
+          <li class="active">Disclosures Section</li>
+          <li>Additional Questions</li>
+        </ul>',
+    );
+    $step5['information_step5'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step5['header_text_step5'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p></div>
+       <div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    $step5['header_markup_step5'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step5['prev_step5'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'button',
+      '#value' => t('Prev'),
+    );
+    $step5['submit_step5']=array(
+      '#type'=>'submit',
+      '#value'=>t('Save/Next'),
+    );
+    $step5['completed_step5'] = array(
+      '#type' => 'button',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step5['markup_borrower_step5'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower Ethnicity / Race') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower Ethnicity / Race') . '</h4></div>',
+    );
+    $step5['not_give_race_info_borrower'] = array(
+      '#type' => 'checkbox',
+      '#prefix' => '<div class="section-header col-sm-6">',
+      '#title' => t('I do not wish to furnish this information'),
+      '#suffix' => '</div>',
+    );
+    $step5['not_give_race_info_coborrower'] = array(
+      '#type' => 'checkbox',
+      '#prefix' => '<div class="section-header col-sm-6">',
+      '#title' => t('I do not wish to furnish this information'),
+      '#suffix' => '</div>',
+    );
+    $step5['race_borrower'] = array(
+      '#type' => 'checkboxes',
+      '#prefix' => '<div class="left-section col-sm-6">',
+      '#options' => drupal_map_assoc(array(
+        t('Hispanic or Latino'),
+        t('Not Hispanic or Latino'),
+        t('American Indian or Alaska Native'),
+        t('Native Hawaiian or Other Pacific Islander'),
+        t('Asian'),
+        t('White'),
+        t('Black or African American'),
+        )),
+      '#suffix' => '</div>',  
+    );
+    $step5['race_coborrower'] = array(
+      '#type' => 'checkboxes',
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#options' => drupal_map_assoc(array(
+        t('Hispanic or Latino'),
+        t('Not Hispanic or Latino'),
+        t('American Indian or Alaska Native'),
+        t('Native Hawaiian or Other Pacific Islander'),
+        t('Asian'),
+        t('White'),
+        t('Black or African American'),
+        )),
+      '#suffix' => '</div></div></div>',  
+    );
+    $step5['sex_header_step5'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Sex') . '</span></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step5['sex_header_text_step5'] = array(
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header col-sm-6">' . t('Borrower') . '</h4>
+         <h4 class="section-header col-sm-6">' . t('Co-Borrower') . '</h4></div>',
+    );
+    $step5['sex_borrower_step5'] = array(
+      '#prefix'=>'<div class="left-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array(t('Male'), t('Female')),
+      '#suffix' => '</div>',
+    );
+    $step5['sex_coborrower_step5'] = array(
+      '#prefix'=>'<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array(t('Male'), t('Female')),
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['borrower_declarations'] = array(
+       '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Borrower Declaration') . '</span></div>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',
+    );
+    $step5['declaration_text_step5'] = array(
+      '#markup'=>'<div class="borrower-text-header"><h4 class="col-sm-4">' . t('Borrower') . '</h4>
+         <h4 class="col-sm-4">' . t('Co-Borrower') . '</h4><div class="col-sm-4"></div></div></div></div>',
+    );
+    $step5['outstanding_judgement_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['outstanding_judgement_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['outstanding_judgement_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('a. Are there any outstanding judgements against you?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['declared_bankrupt_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['declared_bankrupt_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['declared_bankrupt_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('b. Have you been declared bankrupt within the past 7 years?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['forclosed_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['forclosed_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['forclosed_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('c. Have you had property foreclosed upon or given title or deed in lieu thereof on he last 7 years?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['lawsuite_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['lawsuite_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['lawsuite_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('d. Are you a party to a lawsuite?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['obligated_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['obligated_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['obligated_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('e. Have you been directly or indirectly been obligated on any loan which resulted in forecloase, transfer on title in lieu of foreclose, or judgement?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['federal_debt_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['federal_debt_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['federal_debt_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('f. Are you currently delinquent or in default in any Federal debt or any other loan, mortgage, financial obligation, bond, or loan guarantee?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['pay_alimony_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['pay_alimony_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['pay_alimony_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('g. Are you obligated to pay alimony, child support, or separate maintenance?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['down_payment_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['down_payment_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['down_payment_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('h. Is any part of the down payment borrowed?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['endorser_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['endorser_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['endorser_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('i. Are you a co-maker or endorser on a note?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['citizen_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['citizen_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['citizen_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('j. Are you a U.S. citizen?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['permanent_resident_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['permanent_resident_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['permanent_resident_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('k. Are you a permanent resident alien?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['occupy_property_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['occupy_property_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['occupy_property_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('l. Do you intent to occupy the property as your primary residence?') . '</p>',
+      '#suffix' => '</div></div></div>',
+    );
+    $step5['ownership_interest_borrower'] = array(
+      '#prefix' => '<div class="row"><div class="col-sm-12"><div class="left-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['ownership_interest_coborrower'] = array(
+      '#prefix' => '<div class="middle-section col-sm-4">',
+      '#type' => 'select',
+      '#options' => array(t('No'), t('Yes')), 
+      '#suffix' => '</div>',
+    );
+    $step5['ownership_interest_text'] = array(
+      '#prefix' => '<div class="right-section col-sm-4">',
+      '#markup' => '<p>' . t('m. Have you had ownership interest in a property in the last three years?') . '</p>',
+      '#suffix' => '</div></div></div></div></div>',
+    );
+    $form[] = $step5;
+    $step6['form_header_step6'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li class="active">
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step6['progress_step6'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">
+        <ul>
+          <li class="completed green">Account Section <span>&#10004;</span></li>
+          <li class="completed green">Borrower Section <span>&#10004;</span></li>
+          <li class="completed green">Employment Section <span>&#10004;</span></li>
+          <li class="completed green"> Property Section <span>&#10004;</span></li>
+          <li class="completed green">Monthly Income Section <span>&#10004;</span></li>
+          <li class="completed green">Disclosures Section <span>&#10004;</span></li>
+          <li class="active">Additional Questions</li>
+        </ul>',
+    );
+    $step6['information_step6'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step6['header_text_step6'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p></div>
+       <div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    $step6['header_markup_step6'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Additional Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step6['prev_step6'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'button',
+      '#value' => t('Prev'),
+    );
+    $step6['submit_step6']=array(
+      '#type'=>'submit',
+      '#value'=>t('Save/Next'),
+    );
+    $step6['completed_step6'] = array(
+      '#type' => 'button',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step6['markup_borrower_step6'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header">' . t('Renting History (Only Purchase Application)') . '</h4></div>',
+    );
+    $step6['monthly_rent_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What is your monthly rent payment?') . '</div>',
+    );
+    $step6['monthly_rent'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['in_a_lease_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Are you in a lease?') . '</div>',
+    );
+    $step6['in_a_lease'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['lease_yes_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('If yes, what month/year is your lease upto?') . '</div>',
+    );
+    $step6['lease_yes'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['get_out_lease_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Are you able to get out of your lease?') . '</div>',
+    );
+    $step6['get_out_lease'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['type_of_property_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Type of property Renting?') . '</div>',
+    );
+    $step6['type_of_property'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array(t('abc'), t('def')),
+      '#suffix' => '</div>',
+    );
+    $step6['name_of_landlord_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What is the name of your landlord?') . '</div>',
+    );
+    $step6['name_of_landlord'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['number_of_landlord_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t("What is the number of your landlord? (We won't call)") . '</div>',
+    );
+    $step6['number_of_landlord'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['credit_history_step6'] = array(
+      '#markup'=>'<div class="borrower-text col-sm-12"><h4 class="section-header">' . t('Credit History') . '</h4></div>',
+    );
+    $step6['filed_bankruptcy_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Have you filed a bankruptcy?') . '</div>',
+    );
+    $step6['filed_bankruptcy'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['type_of_bankruptcy_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('If yes, what type of bankruptcy?') . '</div>',
+    );
+    $step6['type_of_bankruptcy'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['bankruptcy_discharge_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What was the discharge date?') . '</div>',
+    );
+    $step6['bankruptcy_discharge'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['downpayment_step6'] = array(
+      '#markup'=>'<div class="borrower-text col-sm-12"><h4 class="section-header">' . t('Down Payment (Only Purchase Application)') . '</h4></div>',
+    );
+    $step6['downpayment_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have a down payment?') . '</div>',
+    );
+    $step6['downpayment'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['downpayment_from_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Where is your down payment from? Savings, 401K Family Member, Other') . '</div>',
+    );
+    $step6['downpayment_from'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['downpayment_amount_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What amount do you have saved for your down payment?') . '</div>',
+    );
+    $step6['downpayment_amount'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['downpayment_amount_available_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What amount available or you have in your 401K for a down payment?') . '</div>',
+    );
+    $step6['downpayment_amount_available'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['gift_downpayment_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have a family member that is able to gift some or all your down payment?') . '</div>',
+    );
+    $step6['gift_downpayment'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['gift_downpayment_amount_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('What is the amount is someone able to gift for your down payment?') . '</div>',
+    );
+    $step6['gift_downpayment_amount'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['income_step6'] = array(
+      '#markup'=>'<div class="borrower-text col-sm-12"><h4 class="section-header">' . t('Income') . '</h4></div>',
+    );
+    $step6['any_other_income_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have any other income that you have not listed in your application?') . '</div>',
+    );
+    $step6['any_other_income'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['any_other_obligation_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have to pay any other obligations not listed on your credit report?') . '</div>',
+    );
+    $step6['any_other_obligation'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['family_coborrower_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('If needed, do you have a family member that would be able to be a co-borrower?') . '</div>',
+    );
+    $step6['family_coborrower'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['employment_step6'] = array(
+      '#markup'=>'<div class="borrower-text col-sm-12"><h4 class="section-header">' . t('Employment') . '</h4></div>
+      <div class="left-section col-sm-7"><span class="help"><a href="#">?</a></span>' . t('Employers:')
+    );
+    $step6['employer_1'] = array(
+      '#type' => 'textfield',
+    );
+    $step6['employer_2'] = array(
+      '#type' => 'textfield',
+    );
+    $step6['employer_3'] = array(
+      '#type' => 'textfield',
+    );
+     $step6['employer_4'] = array(
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['hr_number_step6'] = array(
+      '#markup'=>'<div class="right-section col-sm-5">' . t('HR Phone Number:'),
+    );
+    $step6['hr_number_1'] = array(
+      '#type' => 'textfield',
+    );
+    $step6['hr_number_2'] = array(
+      '#type' => 'textfield',
+    );
+    $step6['hr_number_3'] = array(
+      '#type' => 'textfield',
+    );
+    $step6['hr_number_4'] = array(
+      '#type' => 'textfield',
+      '#suffix' => '</div>',
+    );
+    $step6['permanent_resident_step6'] = array(
+      '#markup'=>'<div class="borrower-text col-sm-12"><h4 class="section-header">' . t('Permanent Resident Alien') . '</h4></div>'
+    );
+    $step6['social_security_number_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have a valid social security number?') . '</div>',
+    );
+    $step6['social_security_number'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['temporary_residency_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have a temporary residency status?') . '</div>',
+    );
+    $step6['temporary_residency'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['temporary_residency_expire_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('When does the temporary residency status expire?') . '</div>',
+    );
+    $step6['temporary_residency_expire'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'date',
+      '#suffix' => '</div>',
+    );
+    $step6['employment_authorization_text'] = array(
+      '#markup' => '<div class="left-section col-sm-6"><span class="help"><a href="#">?</a></span>' . t('Do you have an Employment Authorization Document from the US citizenship and Immigration Service?') . '</div>',
+    );
+    $step6['employment_authorization'] = array(
+      '#prefix' => '<div class="right-section col-sm-6">',
+      '#type' => 'select',
+      '#options' => array('no' => t('No'), 'yes' => t('Yes')),
+      '#suffix' => '</div>',
+    );
+    $step6['additional_info_text'] = array(
+      '#markup' => '<div class="content-section">' . t("Additional information regarding EAD's is available from the USCIS website at") . '<a href="http://www.uscis.gov" target="_blank"> http://www.uscis.gov/</a></div>',
+    );
+    $form[] = $step6;
+    $step7['form_header'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li>
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li class="active">
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step7['progress_step7'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">',
+    );
+    $block_content = module_invoke('block', 'block_view', '10');
+    $step7['information_step7'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step7['header_text'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p>
+       </div><div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    $step7['header_markup_step7'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step7['completed_step7'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'submit',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step7['markup_borrower_step7'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header">' . t('Credit Card Information') . '</h4></div>',
+    );
+    $step7['card_holder'] = array(
+      '#prefix' => '<div class="col-sm-6">',
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Card Holders: Name on Credit Card'),
+    );
+    $step7['card_holder_address'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Address'),
+    );
+    $step7['card_holder_city'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('City'),
+    );
+    $step7['card_holder_state'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('State'),
+    );
+    $step7['card_holder_zip'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Zip'),
+    );
+    $step7['credit_card_number'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Card Number'),
+    );
+    $step7['credit_card_type'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Credit Card Type (VISA, MASTERCARD, DISCOVER, AMERICAN EXPRESS)'),
+    );
+    $step7['credit_card_date'] = array(
+      '#type' => 'date_select',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Expiration Date'),
+      '#date_format' => 'm-Y',
+      '#default_value' => REQUEST_TIME,
+      '#date_year_range' => '-1:+10',
+    );
+    $step7['credit_card_verification'] = array(
+      '#type' => 'textfield',
+      '#title' => '<span class="help"><a href="#">?</a></span>' . t('Card Verification'),
+      '#rules' => array(
+        'numeric',
+        'length[1, 3]',
+      ),
+    );
+    $step7['credit_card_agreement'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Agree to have my credit pulled to qualify for financing.'),
+      '#suffix' => '</div>',
+    );
+    $step7['credit_card_description'] = array(
+      '#markup' => '<div class="col-sm-6">
+        <p>' . t('As a mortgage brokerage we are approved to pull your credit through Credit Information Systems an independent credit report agency.
+          This allows us to use your credit to compare bank and direct lenders rate, specific loan programs and pricing for our customers. Then we assign your credit report to
+          direct lender to get you our customers the best rate, loan program pricing and closing speed. We bill your credit card to pull your credit report through
+          '). '<a href="http://www.creditinfosystems.com">http://www.creditinfosystems.com </a>' . t('to approve you to finance a home. If needed, we will run their 
+          "Improved Credit Score Algorithm" to see how we are able to increase your credit scores to qualify to purchase a home.'). '</p>
+          <p>' . t('Possible, Additional Credit Card:') . '</p>
+          <p>' . t('Credit Report') . '</p>
+          <p>' . t('If, Employeer Charge for verification of Employment') . '</p>
+          <p>' . t('Purchasing a Condo, Condo Certification, Etc.') . '</p>
+          <p>' . t('Appraisal') . '</p>
+      </div>',
+    );
+    $form[] = $step7;
+    $step8['form_header'] = array(
+      '#markup' => '<div class="steps">
+        <ul>
+          <li>
+            <span class="step-num">1</span>
+            <span class="step-num-text">' . t('Step One:') . '</span>
+            <span class="step-text">Loan Application</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span class="step-num-text">Step Two:</span>
+            <span class="step-text">Credit Authorization</span>
+          </li>
+          <li class="active">
+            <span class="step-num">3</span>
+            <span class="step-num-text">Step Three:</span>
+            <span class="step-text">Documentation</span>
+          </li>
+        </ul>
+      </div>',
+    );
+    $step8['progress_step8'] = array(
+      '#prefix' => '<div class="page-wrapper row">',
+      '#markup' => '<div class="col-sm-3 pg-section">',
+    );
+    $block_content = module_invoke('block', 'block_view', '10');
+    $step8['information_step8'] = array(
+      '#markup' => render($block_content['content']) . '</div>'
+    );
+    $step8['header_text'] = array(
+      '#type' => 'markup',
+      '#markup' =>'<div class="col-sm-9"><div class="row"><div class="col-sm-12"><div class="description-text col-sm-10">
+       <p>' . t("Using our online loan application, you can take your time and complete your application whenever it's convenient for you.
+       And you can always save your work and come back and complete it late if you need to.") . '</p>
+       </div><div class="secure-connect col-sm-2"><h3>' . t('Secure Connection') . '<h3></div></div></div>', 
+    );
+    $step8['header_markup_step8'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="form-header"><span class="form-header-text">' . t('Mortgage Aplication') . '</span>',
+      '#prefix' => '<div class="row"><div class="col-sm-12">',      
+    );
+    $step8['completed_step8'] = array(
+      '#prefix' => '<div class="buttons">',
+      '#type' => 'submit',
+      '#value' => t('Completed'),
+      '#suffix' => '</div></div>',
+    );
+    $step8['markup_borrower_step8'] = array(
+      '#type'=>'markup',
+      '#markup'=>'<div class="borrower-text"><h4 class="section-header">' . t('Documentation') . '</h4></div>',
+    );
+    
+    $step8['credit_card_description'] = array(
+      '#markup' => '<div class="mortgage-application-documentation">
+        <p>' . t('Loan Application Documentation:') . '</p>
+          <p>' . t('These documents will be necessary to process your loan quickly.') . '</p>
+          <p class="docs">' . t('Last 2 Months Pay Stubs with latest pay stub showing year to date income.') . '</p>
+          <p>' . t('Last 2 Months Bank Statements all bank accounts.') . '</p>
+          <p>' . t("Last 2 Years W-2's with Full Tax Returns.") . '</p>
+          <p>' . t("Clear copy of Driver's License and Security Card.") . '</p>
+          <p class="borrower-docs">' . t('Borrower Authorization (One for Each Borrower)') . '</p>
+          <p>' . t('Complete, Sign & Date Borrower Authorization Form.') . '</p>
+          <p class="thank-you">' . t('Thank you for applying with us and your consideration.') . '</p>
+          <p>' . t('Please fax, email or mail all requested documents as soon as possible.') . '</p>
+      </div>',
+    );
+    $form[] = $step8;
+    return $form;
+}
+
+
+function getNumberOfSteps() {
+    return count(mortgage_application_form());
+}
+
+
+function multipageform_form1_validate($form, $form_state) {
+    switch ($form_state['step']) {
+        case '0':
+            // if(empty($form_state['values']['name']))
+             // form_set_error('name','Name cannot be empty');
+          // else if(empty($form_state['values']['last_name']))
+             // form_set_error('last_name','Last name cannot be empty');
+            // break;
+
+        case '1':
+            // if(filter_var($form_state['values']['email'], FILTER_VALIDATE_EMAIL) == false)
+                 // form_set_error('email','Email is not valid');
+            // break;
+
+        default:
+            break;
+    }
+
+}
+
+
+function multipageform_form1_submit($form, &$form_state) {
+  global $user;
+  $form_state['storedvalues'][$form_state['step']] = $form_state['values'];
+  // Save form values in session so that user can submit it later.
+  if($form_state['step'] + 1 != getNumberOfSteps()) {
+    $form_state['rebuild'] = TRUE;
+  }
+  else {
+    $finalformvalues=array();
+    $allsteps = mortgage_application_form();
+    //$currform =  $allsteps[$currstep];
+    $last_key = key( array_slice( $allsteps, -1, 1, TRUE ) );
+    $currStep = 0;
+    
+    foreach ($allsteps as $step_key => $step) {
+      foreach ($step as $key => $value) {
+        $finalformvalues[$key] = !empty($form_state['storedvalues'][$currStep][$key]) ? $form_state['storedvalues'][$currStep][$key] : '';
+      }
+      $currStep++;
+    }
+    $values = array(
+      'type_of_application' => $finalformvalues['type_of_application'],
+      'borrower_fname' => $finalformvalues['fname_borrower'],
+      'borrower_mname' => $finalformvalues['mname_borrower'],
+      'borrower_lname' => $finalformvalues['last_name_borrower'],
+      'borrower_ss_number' => $finalformvalues['social_security_borrower'],
+      'borrower_mail' => $finalformvalues['mail_borrower'],
+      'borrower_dob' => $finalformvalues['birthdate_borrower'],
+      'borrower_house_no' => $finalformvalues['home_number_borrower'],
+      'borrower_work_no' => $finalformvalues['work_number_borrower'],
+      'borrower_marital_status' => $finalformvalues['maritial_status_borrower'],
+      'borrower_dependent' => $finalformvalues['dependent_borrower'],
+      'borrower_dependent_age' => $finalformvalues['dependent_age_borrower'],
+      'borrower_year_in_school' => $finalformvalues['years_in_school_borrower'],
+      'coborrower_fname' => $finalformvalues['fname_coborrower'],
+      'coborrower_mname' => $finalformvalues['mname_coborrower'],
+      'coborrower_lname' => $finalformvalues['last_name_coborrower'],
+      'coborrower_ss_number' => $finalformvalues['social_security_coborrower'],
+      'coborrower_mail' => $finalformvalues['mail_coborrower'],
+      'coborrower_dob' => $finalformvalues['birthdate_coborrower'],
+      'coborrower_house_no' => $finalformvalues['home_number_coborrower'],
+      'coborrower_work_no' => $finalformvalues['work_number_coborrower'],
+      'coborrower_marital_status' => $finalformvalues['maritial_status_coborrower'],
+      'coborrower_dependent' => $finalformvalues['dependent_coborrower'],
+      'coborrower_dependent_age' => $finalformvalues['dependent_age_coborrower'],
+      'coborrower_year_in_school' => $finalformvalues['years_in_school_coborrower'],
+      'borrower_own_or_rent' => $finalformvalues['own_rent_borrower'],
+      'borrower_last_address_years' => $finalformvalues['many_years_borrower'],
+      'borrower_last_address' => $finalformvalues['address_borrower'],
+      'borrower_last_address_city' => $finalformvalues['city_borrower'],
+      'borrower_last_address_state' => $finalformvalues['state_borrower'],
+      'borrower_last_address_zip' => $finalformvalues['zip_borrower'],
+      'coborrower_own_or_rent' => $finalformvalues['own_rent_coborrower'],
+      
+      'coborrower_last_address_years' => $finalformvalues['many_years_coborrower'],
+      'coborrower_last_address' => $finalformvalues['address_coborrower'],
+      'coborrower_last_address_city' => $finalformvalues['city_coborrower'],
+      'coborrower_last_address_state' => $finalformvalues['state_coborrower'],
+      'coborrower_last_address_zip' => $finalformvalues['zip_coborrower'],
+      'borrower_mailing_address' => $finalformvalues['mail_borrower'],
+      'borrower_mailing_address_city' => $finalformvalues['birthdate_borrower'],
+      'borrower_mailing_address_state' => $finalformvalues['home_number_borrower'],
+      'borrower_mailing_address_zip' => $finalformvalues['work_number_borrower'],
+      'coborrower_mailing_address' => $finalformvalues['maritial_status_borrower'],
+      'coborrower_mailing_address_city' => $finalformvalues['dependent_borrower'],
+      'coborrower_mailing_address_state' => $finalformvalues['dependent_age_borrower'],
+      'coborrower_mailing_address_zip' => $finalformvalues['years_in_school_borrower'],
+      'borrower_self_employed' => $finalformvalues['fname_coborrower'],
+      'borrower_employer_name' => $finalformvalues['mname_coborrower'],
+      'borrower_employment_address' => $finalformvalues['last_name_coborrower'],
+      'borrower_employment_address_city' => $finalformvalues['social_security_coborrower'],
+      'borrower_employment_address_state' => $finalformvalues['mail_coborrower'],
+      'borrower_employment_address_zip' => $finalformvalues['birthdate_coborrower'],
+      'borrower_employment_work_phone' => $finalformvalues['home_number_coborrower'],
+      'borrower_employment_position' => $finalformvalues['work_number_coborrower'],
+      'coborrower_self_employed' => $finalformvalues['maritial_status_coborrower'],
+      'coborrower_employer_name' => $finalformvalues['dependent_coborrower'],
+      'coborrower_employment_address' => $finalformvalues['dependent_age_coborrower'],
+      'coborrower_employment_address_city' => $finalformvalues['years_in_school_coborrower'],
+      'coborrower_employment_address_state' => $finalformvalues['own_rent_borrower'],
+      'coborrower_employment_address_zip' => $finalformvalues['many_years_borrower'],
+      'coborrower_employment_work_phone' => $finalformvalues['address_borrower'],
+      'coborrower_employment_position' => $finalformvalues['city_borrower'],
+      'borrower_employment_years' => $finalformvalues['state_borrower'],
+      'coborrower_employment_years' => $finalformvalues['zip_borrower'],
+      'borrower_employment_years_in_line' => $finalformvalues['own_rent_coborrower'],
+      
+    );
+    print_r($finalformvalues);
+    die();
+    //Store the values from $finalformvalues in database or file etc
+  }
+  $form_state['redirect'] = url('thank-you', array('absolute' => true));
+}
+
+
+function multipageform_email_element_validate($element, &$form_state, $form) {
+   // if (!valid_email_address($element['#value'])) {
+     // form_error($element, t('Please enter a valid email address.'));
+   // }
+}

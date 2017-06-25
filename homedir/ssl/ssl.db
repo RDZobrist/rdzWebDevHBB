@@ -1,0 +1,42 @@
+--- 
+files: 
+  certificate: 
+    www_humanbrainbox_com_9dffa_be599_1461196799_16cd858f01bea1238d35b597c926c9d5: 
+      created: '1429564020'
+      domains: 
+        - www.humanbrainbox.com
+        - humanbrainbox.com
+      friendly_name: www.humanbrainbox.com and humanbrainbox.com
+      id: www_humanbrainbox_com_9dffa_be599_1461196799_16cd858f01bea1238d35b597c926c9d5
+      is_self_signed: 0
+      issuer.commonName: COMODO RSA Domain Validation Secure Server CA
+      issuer.organizationName: COMODO CA Limited
+      modulus: 9dffaac6febf70cdf8f41e5d99cdd9736e4292ac632a6a9430a778ba745c0495bacde58845d2c77bc6e70c1602e49d1ece2374f5bd02b237298a1af80130f6ce29713748c72f5bf2c9e4383dabd41c6ecc531d466d4509073726815b47701154f5e098c667cc1b53bee55f347da0ccb9046c94b74a00ddcba77edb8bdbdf3fe1d2a71cc6c8a44ed128b4c9cb0f0b86ee1e40257b081e00821fe2370dbf439ea0ab655798cfe313ea3a985e84498aa89c1ad737256c008ac9b30e547f844b4c0fff893795a6ff9822b77224eb6447546adacdcf1b227c35fe4b275a732462ee05bad9cce3f487f790d2b7804bb231aa9053ba8d59c78d54dd5a359243d81be599
+      modulus_length: 2048
+      not_after: '1461196799'
+      not_before: '1429488000'
+      subject.commonName: www.humanbrainbox.com
+  key: 
+    9dffa_be599_5c8b05c08b77f43e298cd64d1d81b37c: 
+      created: '1429564021'
+      friendly_name: 2,048 bits, created 4/20/15 9:07 PM UTC
+      id: 9dffa_be599_5c8b05c08b77f43e298cd64d1d81b37c
+      modulus: 9dffaac6febf70cdf8f41e5d99cdd9736e4292ac632a6a9430a778ba745c0495bacde58845d2c77bc6e70c1602e49d1ece2374f5bd02b237298a1af80130f6ce29713748c72f5bf2c9e4383dabd41c6ecc531d466d4509073726815b47701154f5e098c667cc1b53bee55f347da0ccb9046c94b74a00ddcba77edb8bdbdf3fe1d2a71cc6c8a44ed128b4c9cb0f0b86ee1e40257b081e00821fe2370dbf439ea0ab655798cfe313ea3a985e84498aa89c1ad737256c008ac9b30e547f844b4c0fff893795a6ff9822b77224eb6447546adacdcf1b227c35fe4b275a732462ee05bad9cce3f487f790d2b7804bb231aa9053ba8d59c78d54dd5a359243d81be599
+      modulus_length: 2048
+indexes: 
+  certificate: 
+    modulus: 
+      9dffaac6febf70cdf8f41e5d99cdd9736e4292ac632a6a9430a778ba745c0495bacde58845d2c77bc6e70c1602e49d1ece2374f5bd02b237298a1af80130f6ce29713748c72f5bf2c9e4383dabd41c6ecc531d466d4509073726815b47701154f5e098c667cc1b53bee55f347da0ccb9046c94b74a00ddcba77edb8bdbdf3fe1d2a71cc6c8a44ed128b4c9cb0f0b86ee1e40257b081e00821fe2370dbf439ea0ab655798cfe313ea3a985e84498aa89c1ad737256c008ac9b30e547f844b4c0fff893795a6ff9822b77224eb6447546adacdcf1b227c35fe4b275a732462ee05bad9cce3f487f790d2b7804bb231aa9053ba8d59c78d54dd5a359243d81be599: 
+        www_humanbrainbox_com_9dffa_be599_1461196799_16cd858f01bea1238d35b597c926c9d5: ~
+    subject.commonName: 
+      www.humanbrainbox.com: 
+        www_humanbrainbox_com_9dffa_be599_1461196799_16cd858f01bea1238d35b597c926c9d5: ~
+uniques: 
+  certificate: 
+    friendly_name: 
+      www.humanbrainbox.com and humanbrainbox.com: www_humanbrainbox_com_9dffa_be599_1461196799_16cd858f01bea1238d35b597c926c9d5
+  key: 
+    friendly_name: 
+      2,048 bits, created 4/20/15 9:07 PM UTC: 9dffa_be599_5c8b05c08b77f43e298cd64d1d81b37c
+    modulus: 
+      9dffaac6febf70cdf8f41e5d99cdd9736e4292ac632a6a9430a778ba745c0495bacde58845d2c77bc6e70c1602e49d1ece2374f5bd02b237298a1af80130f6ce29713748c72f5bf2c9e4383dabd41c6ecc531d466d4509073726815b47701154f5e098c667cc1b53bee55f347da0ccb9046c94b74a00ddcba77edb8bdbdf3fe1d2a71cc6c8a44ed128b4c9cb0f0b86ee1e40257b081e00821fe2370dbf439ea0ab655798cfe313ea3a985e84498aa89c1ad737256c008ac9b30e547f844b4c0fff893795a6ff9822b77224eb6447546adacdcf1b227c35fe4b275a732462ee05bad9cce3f487f790d2b7804bb231aa9053ba8d59c78d54dd5a359243d81be599: 9dffa_be599_5c8b05c08b77f43e298cd64d1d81b37c

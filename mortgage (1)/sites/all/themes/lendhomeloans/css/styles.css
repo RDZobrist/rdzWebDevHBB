@@ -1,0 +1,71 @@
+.front  #main .content-container .pane-block-1{
+	position: relative; 
+	padding: 0px; 
+	box-shadow: inset 0 8px 7px -7px rgba(0,0,0,.05);  
+	min-height: 475px;  
+	background: url(../img/couple_pickup.jpg) 80% 0 no-repeat;
+	background-size: auto;
+}
+.content-container{width: inherit;}
+#main-wrapper{margin-top: 0px;}
+.header-top{padding-top: 10px;    padding-bottom: 10px;}
+.info-section h3 {float: left; padding-left:10px; padding-right: 10px;}
+.info-section img{margin-right: 5px;}
+
+
+/*.front  #main .content-container .pane-block-1 .block-content{text-align: center;}*/
+.front  #main .content-container .pane-block-1 .block-content h1{margin-top: 0px;}
+.front  #main .content-container .pane-block-4{background: #E8B71A; height: 60px; }
+.front  #main .content-container .pane-block-4 .pane-content{padding: 15px;}
+.front  #main .content-container .pane-block-4 h3{margin: 0px; color: #fff; }
+.personal-consultation span {float: right;}
+.personal-consultation span a{color: #fff;}
+#block-menu-menu-header-top-menu ul li {list-style: none;}
+#block-menu-menu-header-top-menu .content{float: right;}
+#block-block-3{float: right;}
+#block-block-3 ul li {list-style: none; float: left; padding-left: 5px; padding-right: 5px;}
+#block-block-3 h2{font-size: 18px; text-align: right;}
+.header-seprator{height: 20px; background: #E8B71A;}
+.region-footer-right-top .block-menu{float: left; margin-left: 20px; margin-right: 20px;}
+.region-footer-right-top .block-menu ul li{list-style: none;}
+.region-footer-right-top .block-menu ul{padding: 0px;}
+.region-footer-right-top .block-menu h2{font-size: 18px;}
+.footer-bottom{background: #E8B71A;}
+.footer-bottom ul li {float: left; list-style: none; margin-right: 20px; padding-top: 10px; padding-bottom: 10px; padding-right: 25px;}
+.footer-bottom ul li a{color: #fff; text-decoration: none;}
+.page-bottom{padding-left: 20px; padding-right: 20px;}
+#main-wrapper { margin-bottom: 10px;}
+.front .panel-panel{padding: 0px;}
+.navbar-brand { padding: 0; }
+.front #main .content-container .pane-block-1 .pane-content {	display: table;	margin: 0 auto;	padding-top: 75px;}
+.front  #main .content-container .pane-block-4 .pane-content {	max-width: 1170px;	margin: 0 auto;}
+.application-steps { border-bottom: 1px solid #000; margin-bottom: 20px;  height: 120px;   margin-top: 20px;}
+.application-steps  .step {float: left;   padding: 10px;   width: 320px; list-style: none; padding: 20px;  background: #DB3340;}
+.application-steps  .steps  .active{background: #D3D3D3;}
+.application-steps  .steps .two, .application-steps  .steps .three{margin-left: 15px;}
+.application-steps  .step .text{font-size: 20px;}
+.application-steps  .step .step-num{width: 58px; font-weight: bold; font-size: 26px;  height: 57px;    background: #fff;    padding-left: 21px;    padding-top: 11px;    float: left;    margin-left: 4px;    border-radius: 65px;}
+.form-header{background: #DB3340; color: #fff; padding: 15px;}
+.section-header{background: #C6D5CD; padding-top: 10px; padding-bottom: 10px;}
+.buttons{float: right;}
+.region-page-bottom-region{padding-top: 15px;}
+.borrower-text-header{padding-top: 0px; height: 40px; background: grey; padding-bottom: 10px; color: #fff;}
+.page-wrapper .pg-section li{list-style: none;    font-size: 16px; border-bottom: 1px solid #fff;   padding: 10px;}
+.page-wrapper .pg-section li span{float: right; color: #fff; font-weight: bold;}
+.page-wrapper .pg-section li.completed{background-color: #28ABE3;  color: #fff;}
+.page-wrapper .pg-section li.current{background-color: #28ABE3;  color: #fff;}
+.page-wrapper .pg-section ul{padding: 0px;}
+.webform-client-form-1 .webform-progressbar{min-height: 420px;}
+.borrower-text h4{margin-top: 0px; margin-bottom: 0px; padding-left: 15px;}
+.section-header{color: #000;}
+.borrower-text {padding-left: 0px;    padding-right: 0px;}
+#block-menu-menu-footer-menu ul{padding-left: 0px; margin-bottom: 0px;}
+.webform-component--desired-purchase-price{padding-left: 0px;}
+.webform-component--are-you-self-employed-borrower{margin-top: 10px;}
+.webform-component--are-you-self-employed-coborrower{margin-top: 10px;}
+#block-block-18 .header-seprator{margin-top: 20px;}
+.returning-client{color: #DB3340;}
+.re-clients{margin-bottom: 20px;}
+.new-mortgage-form-header{margin-bottom: 20px;}
+.re-client-bottom{margin-top: 20px; margin-bottom: 0px;}
+#lendhomeloans-free-consultation-form .form-item-last-name, #lendhomeloans-free-consultation-form .form-item-number{width: 40%;}

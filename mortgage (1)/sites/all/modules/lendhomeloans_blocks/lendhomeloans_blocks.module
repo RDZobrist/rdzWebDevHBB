@@ -1,0 +1,262 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ * Creating information of blocks.
+ */
+function lendhomeloans_blocks_block_info() {
+  $block = array();
+
+  $block['contact_us_form'] = array(
+    'info' => t('Contact Us Form')
+  );
+  $block['free_consultation_form'] = array(
+    'info' => t('Free Consultation Form')
+  );
+  $block['home_loan_form'] = array(
+    'info' => t('Home Loan quote Form')
+  );
+  return $block;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * creating view of blocks.
+ */
+function lendhomeloans_blocks_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+  case 'contact_us_form':
+    $block['subject'] = t('Contact Us');
+    $block['content'] = contact_us_form_content();
+
+    break;
+  case 'free_consultation_form':
+    $block['subject'] = t('');
+    $block['content'] = free_consultation_form_content();
+
+    break;
+  case 'home_loan_form':
+    $block['subject'] = t('');
+    $block['content'] = home_loan_quote_form_content();
+
+    break;  
+  }
+ return $block;
+}
+
+/*
+ * Contact Us form content
+ */
+function contact_us_form_content() {
+ $html = "";
+ $form = drupal_get_form('lendhomeloans_contact_us_form');
+ $html = drupal_render($form);
+ return  $html;
+}
+
+/*
+ * Free Consultation form content
+ */
+function free_consultation_form_content() {
+ $html = "";
+ $form = drupal_get_form('lendhomeloans_free_consultation_form');
+ $html = drupal_render($form);
+ return  $html;
+}
+
+/*
+ * Contact Us form definetion
+ */
+function lendhomeloans_contact_us_form($form, $form_state) {
+  $form = array();
+
+  $form['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your Name'),
+    '#title_display' => 'invisible',
+    '#attributes' => array('placeholder' => t('Your Name')),
+    '#required' => TRUE,
+  );
+
+  $form['number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number'),
+    '#title_display' => 'invisible',
+    '#attributes' => array('placeholder' => t('Number')),
+    '#required' => TRUE,
+  );
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#title_display' => 'invisible',
+    '#attributes' => array('placeholder' => t('Email')),
+    '#required' => TRUE,
+  );
+
+  $form['message'] = array(
+    '#type' => 'textarea',
+    '#size' => 60,
+    '#title' => t('Message'),
+    '#title_display' => 'invisible',
+    '#attributes' => array('placeholder' => t('Message')),
+    '#required' => TRUE,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Contact Us',
+  );
+  return $form;
+}
+
+
+/*
+ * Free Consultation form definetion
+ */
+function lendhomeloans_free_consultation_form($form, $form_state) {
+$form = array();
+
+ $form['first_name'] = array(
+   '#type' => 'textfield',
+   '#title' => t('First Name'),
+   '#prefix' => '<div class="wrap-contact row"><div class="name col-md-5">',
+   '#suffix' => '</div>’,
+   '#required' => TRUE,
+ );
+
+ $form['contact'] = array(
+   '#type' => 'select',
+   '#title' => t('Staff member you\'ve been in contact with'),
+   '#options' => array(0 => 'Not yet contacted office'),
+   '#prefix' => '<div class="contact col-md-5">',
+   '#suffix' => '</div></div>’,
+   '#required' => TRUE,
+ );
+
+ $form['last_name'] = array(
+   '#type' => 'textfield',
+   '#title' => t('Last Name'),
+   '#required' => TRUE,
+ );
+
+ $form['number'] = array(
+   '#type' => 'textfield',
+   '#title' => t('Phone Number'),
+   '#required' => TRUE,
+ );
+
+ $form['mail'] = array(
+   '#type' => 'textfield',
+   '#title' => t('Email'),
+   '#prefix' => '<div class="wrap-mail-contact row"><div class="name col-md-5">',
+   '#suffix' => '</div>’,
+   '#required' => TRUE,
+ );
+
+ $form['mail_contact'] = array(
+   '#type' => 'textfield',
+   '#title' => t('When would you like to be contacted ?'),
+   '#prefix' => '<div class="contact col-md-5">',
+   '#suffix' => '</div></div>’,
+   '#required' => TRUE,
+ );
+
+ $form['password'] = array(
+   '#type' => 'textfield',
+   '#title' => t('Create Password'),
+   '#prefix' => '<div class="wrap-password-contact row"><div class="wrap-passwords col-md-5">',
+   '#required' => TRUE,
+ );
+
+ $form['password_re'] = array(
+   '#type' => 'textfield',
+   '#title' => t('Re-Type Password'),
+   '#required' => TRUE,
+   '#suffix' => '</div>'
+ );
+
+ $form['message'] = array(
+   '#type' => 'textarea',
+   '#size' => 60,
+   '#title' => t('Message'),
+   '#prefix' => '<div class="message col-md-5">',
+   '#suffix' => '</div></div>’,
+   '#required' => TRUE,
+ );
+
+ $form['submit'] = array(
+   '#type' => 'submit',
+   '#value' => 'Submit',
+ );
+return $form;
+}
+
+/**
+  * Implements hook_theme().
+  */
+function lendhomeloans_blocks_theme() {
+  return array( 'home_loan_quote_form' => array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'lendhomeloans_blocks') . '/templates',
+    'template' => 'home-loan-form',
+    ),
+  );
+}
+
+function home_loan_quote_form_content() {
+ $html = "";
+ $form = drupal_get_form('home_loan_quote_form');
+ $html = drupal_render($form);
+ return  $html;
+}
+
+/*
+ * Home loan Quotation form.
+ */
+function home_loan_quote_form($form, &$form_state) {
+  
+  $form['loan_type'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      0 => t('No'),
+      1 => t('Yes'),
+    ),
+    '#title' => 'Type of Loan',
+    '#required' => TRUE, //make this field required 
+  );
+
+  $form['property_type'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      0 => t('No'),
+      1 => t('Yes'),
+    ),
+    '#title' => 'Type of property',
+    '#required' => TRUE, //make this field required 
+  );
+
+  $form['purchase_goal'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      0 => t('No'),
+      1 => t('Yes'),
+    ),
+    '#title' => 'Purchase Goal?',
+    '#required' => TRUE, //make this field required 
+  );
+
+  $form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Click Here!'),
+  );
+  
+  $form['#attached']['js'] = array(
+  drupal_get_path('module', 'lendhomeloans_blocks') . '/sliding.form.js',
+);
+
+  return $form;
+}

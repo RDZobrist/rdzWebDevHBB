@@ -1,0 +1,73 @@
+<?php
+function custom_form_alter(&$form, &$form_state, $form_id)
+{
+
+
+  if($form_id =='user_register_form')
+  {
+  $form['actions']['submit']['#value'] = 'Create Account';
+      
+      $form['account']['name']['#title'] = 'Screenname';
+      $form['account']['name']['#description'] = '(Screennames are permanent)';
+      $form['account']['mail']['#description'] = '(This is your logging name)';
+
+      
+      
+  }
+  if($form_id =='user_pass_reset')
+  {
+  	$form['actions']['submit']['#value'] = 'Submit Password and Log In';
+        $_SESSION['redirect_after_submit'] = TRUE;
+  }
+
+  if($form_id =='classified_node_form')
+  {
+ 
+
+    $form['options']['status']['#access'] = FALSE;
+    
+
+}
+}
+
+
+function custom_block_info() {
+  $blocks = array();
+
+  $blocks['user_reset_pass'] = array(
+    'info' => t('Reset Password Message'),
+  );
+
+  return $blocks;
+}
+
+function custom_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'user_reset_pass':
+      $block['subject'] = '';
+      $block['content'] = my_module_content();
+      break;
+  }
+
+  return $block;
+}
+
+function my_module_content() {
+	$user_details =user_load(arg(2));
+	$user_email = $user_details->mail; 
+  $output = '<div class="main_text"><strong>Thanks for signing up for a HUB Listing Service  account.</strong></div>
+
+<div class="second">A link to activate your account has just been emailed to '.$user_email.'</div>
+
+<div class="third">If you experience any problems or have any questions , please contact help@hublistingservice.com</div>
+
+
+Please enter a new password of your own choosing. Your new password must be 8 characters or more .';
+  return $output;
+}
+
+
+
+

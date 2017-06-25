@@ -1,0 +1,22 @@
+<?php
+// $Id: remove_history.module,v 1.1.2.2.2.1 2011/02/16 19:45:26 hosszukalman Exp $
+/**
+ * @file
+ *
+ *
+ *
+ * @author Kálmán Hosszu - hosszu.kalman@gmail.com - http://www.kalman-hosszu.com
+ */
+
+/* ====================== */
+/* ==== DRUPAL HOOKS ==== */
+/* ====================== */
+
+/**
+ * Implementation of hook_user_view_alter().
+ *
+ * @param &$build AA renderable array representing the user.
+ */
+function remove_history_user_view_alter(&$build) {
+  unset($build['summary']);
+}

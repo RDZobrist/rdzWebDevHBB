@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: gem
+comment: 
+full_name: Gem#find_all_satisfiers
+is_singleton: false
+name: find_all_satisfiers
+params: (dep) {|gem| ...}
+visibility: public

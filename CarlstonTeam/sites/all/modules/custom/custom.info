@@ -1,0 +1,7 @@
+name = custom Field
+description = this is a testing module.
+package = mymodule
+core = 7.x
+files[] = custom.module
+scripts[] = custom.js
+

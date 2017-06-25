@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Gem#same_attributes?
+is_singleton: false
+name: same_attributes?
+params: (other)
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Replaces the gems in the source index from specifications in the installed_spec_directories,
+full_name: Gem::SourceIndex#refresh!
+is_singleton: false
+name: refresh!
+params: ()
+visibility: public

@@ -1,0 +1,2064 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Gem</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Gem</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/lib/rubygems/builder_rb.html">
+                lib/rubygems/builder.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/command_rb.html">
+                lib/rubygems/command.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/command_manager_rb.html">
+                lib/rubygems/command_manager.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/commands/list_command_rb.html">
+                lib/rubygems/commands/list_command.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/commands/rdoc_command_rb.html">
+                lib/rubygems/commands/rdoc_command.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/commands/search_command_rb.html">
+                lib/rubygems/commands/search_command.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/commands/uninstall_command_rb.html">
+                lib/rubygems/commands/uninstall_command.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/defaults_rb.html">
+                lib/rubygems/defaults.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/digest/digest_adapter_rb.html">
+                lib/rubygems/digest/digest_adapter.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/digest/sha1_rb.html">
+                lib/rubygems/digest/sha1.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/digest/sha2_rb.html">
+                lib/rubygems/digest/sha2.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/doc_manager_rb.html">
+                lib/rubygems/doc_manager.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/format_rb.html">
+                lib/rubygems/format.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/gem_openssl_rb.html">
+                lib/rubygems/gem_openssl.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/gem_runner_rb.html">
+                lib/rubygems/gem_runner.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/old_format_rb.html">
+                lib/rubygems/old_format.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/require_paths_builder_rb.html">
+                lib/rubygems/require_paths_builder.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/rubygems_version_rb.html">
+                lib/rubygems/rubygems_version.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/source_index_rb.html">
+                lib/rubygems/source_index.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/specification_rb.html">
+                lib/rubygems/specification.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/user_interaction_rb.html">
+                lib/rubygems/user_interaction.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems/validator_rb.html">
+                lib/rubygems/validator.rb
+                </a>
+        <br />
+                <a href="../files/lib/rubygems_rb.html">
+                lib/rubygems.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Main module to hold all RubyGem classes/modules.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000025">_load</a>&nbsp;&nbsp;
+      <a href="#M000055">activate</a>&nbsp;&nbsp;
+      <a href="#M000028">add_bindir</a>&nbsp;&nbsp;
+      <a href="#M000040">add_dependency</a>&nbsp;&nbsp;
+      <a href="#M000056">all_load_paths</a>&nbsp;&nbsp;
+      <a href="#M000019">array_attribute</a>&nbsp;&nbsp;
+      <a href="#M000016">array_attributes</a>&nbsp;&nbsp;
+      <a href="#M000035">assign_defaults</a>&nbsp;&nbsp;
+      <a href="#M000018">attribute</a>&nbsp;&nbsp;
+      <a href="#M000024">attribute_alias_singular</a>&nbsp;&nbsp;
+      <a href="#M000012">attribute_defaults</a>&nbsp;&nbsp;
+      <a href="#M000011">attribute_names</a>&nbsp;&nbsp;
+      <a href="#M000022">attributes</a>&nbsp;&nbsp;
+      <a href="#M000057">binary_mode</a>&nbsp;&nbsp;
+      <a href="#M000058">bindir</a>&nbsp;&nbsp;
+      <a href="#M000059">clear_paths</a>&nbsp;&nbsp;
+      <a href="#M000060">config_file</a>&nbsp;&nbsp;
+      <a href="#M000061">configuration</a>&nbsp;&nbsp;
+      <a href="#M000062">configuration=</a>&nbsp;&nbsp;
+      <a href="#M000063">datadir</a>&nbsp;&nbsp;
+      <a href="#M000006">default_bindir</a>&nbsp;&nbsp;
+      <a href="#M000003">default_dir</a>&nbsp;&nbsp;
+      <a href="#M000005">default_exec_format</a>&nbsp;&nbsp;
+      <a href="#M000004">default_path</a>&nbsp;&nbsp;
+      <a href="#M000002">default_sources</a>&nbsp;&nbsp;
+      <a href="#M000007">default_system_source_cache_dir</a>&nbsp;&nbsp;
+      <a href="#M000008">default_user_source_cache_dir</a>&nbsp;&nbsp;
+      <a href="#M000013">default_value</a>&nbsp;&nbsp;
+      <a href="#M000051">dependent_gems</a>&nbsp;&nbsp;
+      <a href="#M000064">dir</a>&nbsp;&nbsp;
+      <a href="#M000065">ensure_gem_subdirectories</a>&nbsp;&nbsp;
+      <a href="#M000010">ensure_ssl_available</a>&nbsp;&nbsp;
+      <a href="#M000043">file_name</a>&nbsp;&nbsp;
+      <a href="#M000053">find_all_satisfiers</a>&nbsp;&nbsp;
+      <a href="#M000036">from_yaml</a>&nbsp;&nbsp;
+      <a href="#M000042">full_gem_path</a>&nbsp;&nbsp;
+      <a href="#M000041">full_name</a>&nbsp;&nbsp;
+      <a href="#M000031">has_rdoc?</a>&nbsp;&nbsp;
+      <a href="#M000033">has_test_suite?</a>&nbsp;&nbsp;
+      <a href="#M000032">has_unit_tests?</a>&nbsp;&nbsp;
+      <a href="#M000044">installation_path</a>&nbsp;&nbsp;
+      <a href="#M000066">latest_load_paths</a>&nbsp;&nbsp;
+      <a href="#M000029">lib_files</a>&nbsp;&nbsp;
+      <a href="#M000017">list</a>&nbsp;&nbsp;
+      <a href="#M000037">load</a>&nbsp;&nbsp;
+      <a href="#M000067">load_path_insert_index</a>&nbsp;&nbsp;
+      <a href="#M000030">loaded?</a>&nbsp;&nbsp;
+      <a href="#M000068">manage_gems</a>&nbsp;&nbsp;
+      <a href="#M000039">mark_version</a>&nbsp;&nbsp;
+      <a href="#M000069">marshal_version</a>&nbsp;&nbsp;
+      <a href="#M000034">new</a>&nbsp;&nbsp;
+      <a href="#M000050">normalize</a>&nbsp;&nbsp;
+      <a href="#M000038">normalize_yaml_input</a>&nbsp;&nbsp;
+      <a href="#M000023">overwrite_accessor</a>&nbsp;&nbsp;
+      <a href="#M000070">path</a>&nbsp;&nbsp;
+      <a href="#M000072">platforms</a>&nbsp;&nbsp;
+      <a href="#M000071">platforms=</a>&nbsp;&nbsp;
+      <a href="#M000073">prefix</a>&nbsp;&nbsp;
+      <a href="#M000075">read_binary</a>&nbsp;&nbsp;
+      <a href="#M000021">read_only</a>&nbsp;&nbsp;
+      <a href="#M000074">refresh</a>&nbsp;&nbsp;
+      <a href="#M000020">required_attribute</a>&nbsp;&nbsp;
+      <a href="#M000015">required_attribute?</a>&nbsp;&nbsp;
+      <a href="#M000014">required_attributes</a>&nbsp;&nbsp;
+      <a href="#M000076">required_location</a>&nbsp;&nbsp;
+      <a href="#M000077">ruby</a>&nbsp;&nbsp;
+      <a href="#M000054">ruby_code</a>&nbsp;&nbsp;
+      <a href="#M000078">ruby_version</a>&nbsp;&nbsp;
+      <a href="#M000047">same_attributes?</a>&nbsp;&nbsp;
+      <a href="#M000045">satisfies_requirement?</a>&nbsp;&nbsp;
+      <a href="#M000079">searcher</a>&nbsp;&nbsp;
+      <a href="#M000046">sort_obj</a>&nbsp;&nbsp;
+      <a href="#M000080">source_index</a>&nbsp;&nbsp;
+      <a href="#M000081">sources</a>&nbsp;&nbsp;
+      <a href="#M000009">ssl_available?</a>&nbsp;&nbsp;
+      <a href="#M000082">suffix_pattern</a>&nbsp;&nbsp;
+      <a href="#M000083">suffixes</a>&nbsp;&nbsp;
+      <a href="#M000026">test_suite_file</a>&nbsp;&nbsp;
+      <a href="#M000027">test_suite_file=</a>&nbsp;&nbsp;
+      <a href="#M000048">to_ruby</a>&nbsp;&nbsp;
+      <a href="#M000052">to_s</a>&nbsp;&nbsp;
+      <a href="#M000084">use_paths</a>&nbsp;&nbsp;
+      <a href="#M000085">user_home</a>&nbsp;&nbsp;
+      <a href="#M000049">validate</a>&nbsp;&nbsp;
+      <a href="#M000086">win_platform?</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+    <div id="class-list">
+      <h3 class="section-bar">Classes and Modules</h3>
+
+      Module <a href="Gem/Commands.html" class="link">Gem::Commands</a><br />
+Module <a href="Gem/DefaultUserInteraction.html" class="link">Gem::DefaultUserInteraction</a><br />
+Module <a href="Gem/Ext.html" class="link">Gem::Ext</a><br />
+Module <a href="Gem/Indexer.html" class="link">Gem::Indexer</a><br />
+Module <a href="Gem/InstallUpdateOptions.html" class="link">Gem::InstallUpdateOptions</a><br />
+Module <a href="Gem/LocalRemoteOptions.html" class="link">Gem::LocalRemoteOptions</a><br />
+Module <a href="Gem/Package.html" class="link">Gem::Package</a><br />
+Module <a href="Gem/RequirePathsBuilder.html" class="link">Gem::RequirePathsBuilder</a><br />
+Module <a href="Gem/SSL.html" class="link">Gem::SSL</a><br />
+Module <a href="Gem/Security.html" class="link">Gem::Security</a><br />
+Module <a href="Gem/UserInteraction.html" class="link">Gem::UserInteraction</a><br />
+Module <a href="Gem/VersionOption.html" class="link">Gem::VersionOption</a><br />
+Class <a href="Gem/Builder.html" class="link">Gem::Builder</a><br />
+Class <a href="Gem/Command.html" class="link">Gem::Command</a><br />
+Class <a href="Gem/CommandLineError.html" class="link">Gem::CommandLineError</a><br />
+Class <a href="Gem/CommandManager.html" class="link">Gem::CommandManager</a><br />
+Class <a href="Gem/ConfigFile.html" class="link">Gem::ConfigFile</a><br />
+Class <a href="Gem/ConsoleUI.html" class="link">Gem::ConsoleUI</a><br />
+Class <a href="Gem/Dependency.html" class="link">Gem::Dependency</a><br />
+Class <a href="Gem/DependencyError.html" class="link">Gem::DependencyError</a><br />
+Class <a href="Gem/DependencyInstaller.html" class="link">Gem::DependencyInstaller</a><br />
+Class <a href="Gem/DependencyList.html" class="link">Gem::DependencyList</a><br />
+Class <a href="Gem/DependencyRemovalException.html" class="link">Gem::DependencyRemovalException</a><br />
+Class <a href="Gem/DigestAdapter.html" class="link">Gem::DigestAdapter</a><br />
+Class <a href="Gem/DocManager.html" class="link">Gem::DocManager</a><br />
+Class <a href="Gem/DocumentError.html" class="link">Gem::DocumentError</a><br />
+Class <a href="Gem/EndOfYAMLException.html" class="link">Gem::EndOfYAMLException</a><br />
+Class <a href="Gem/Exception.html" class="link">Gem::Exception</a><br />
+Class <a href="Gem/FileOperations.html" class="link">Gem::FileOperations</a><br />
+Class <a href="Gem/FilePermissionError.html" class="link">Gem::FilePermissionError</a><br />
+Class <a href="Gem/Format.html" class="link">Gem::Format</a><br />
+Class <a href="Gem/FormatException.html" class="link">Gem::FormatException</a><br />
+Class <a href="Gem/GemNotFoundException.html" class="link">Gem::GemNotFoundException</a><br />
+Class <a href="Gem/GemNotInHomeException.html" class="link">Gem::GemNotInHomeException</a><br />
+Class <a href="Gem/GemPathSearcher.html" class="link">Gem::GemPathSearcher</a><br />
+Class <a href="Gem/GemRunner.html" class="link">Gem::GemRunner</a><br />
+Class <a href="Gem/Indexer.html" class="link">Gem::Indexer</a><br />
+Class <a href="Gem/InstallError.html" class="link">Gem::InstallError</a><br />
+Class <a href="Gem/Installer.html" class="link">Gem::Installer</a><br />
+Class <a href="Gem/InvalidSpecificationException.html" class="link">Gem::InvalidSpecificationException</a><br />
+Class <a href="Gem/LoadError.html" class="link">Gem::LoadError</a><br />
+Class <a href="Gem/OldFormat.html" class="link">Gem::OldFormat</a><br />
+Class <a href="Gem/OperationNotSupportedError.html" class="link">Gem::OperationNotSupportedError</a><br />
+Class <a href="Gem/Platform.html" class="link">Gem::Platform</a><br />
+Class <a href="Gem/RemoteError.html" class="link">Gem::RemoteError</a><br />
+Class <a href="Gem/RemoteFetcher.html" class="link">Gem::RemoteFetcher</a><br />
+Class <a href="Gem/RemoteInstallationCancelled.html" class="link">Gem::RemoteInstallationCancelled</a><br />
+Class <a href="Gem/RemoteInstallationSkipped.html" class="link">Gem::RemoteInstallationSkipped</a><br />
+Class <a href="Gem/RemoteSourceException.html" class="link">Gem::RemoteSourceException</a><br />
+Class <a href="Gem/Requirement.html" class="link">Gem::Requirement</a><br />
+Class <a href="Gem/Server.html" class="link">Gem::Server</a><br />
+Class <a href="Gem/SilentUI.html" class="link">Gem::SilentUI</a><br />
+Class <a href="Gem/SourceIndex.html" class="link">Gem::SourceIndex</a><br />
+Class <a href="Gem/SourceInfoCache.html" class="link">Gem::SourceInfoCache</a><br />
+Class <a href="Gem/SourceInfoCacheEntry.html" class="link">Gem::SourceInfoCacheEntry</a><br />
+Class <a href="Gem/StreamUI.html" class="link">Gem::StreamUI</a><br />
+Class <a href="Gem/SystemExitException.html" class="link">Gem::SystemExitException</a><br />
+Class <a href="Gem/Uninstaller.html" class="link">Gem::Uninstaller</a><br />
+Class <a href="Gem/Validator.html" class="link">Gem::Validator</a><br />
+Class <a href="Gem/VerificationError.html" class="link">Gem::VerificationError</a><br />
+Class <a href="Gem/Version.html" class="link">Gem::Version</a><br />
+
+    </div>
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SHA1</td>
+          <td>=</td>
+          <td class="context-item-value">Digest::SHA1</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SHA1</td>
+          <td>=</td>
+          <td class="context-item-value">DigestAdapter.new(Digest::SHA1)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SHA256</td>
+          <td>=</td>
+          <td class="context-item-value">Digest::SHA256</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SHA256</td>
+          <td>=</td>
+          <td class="context-item-value">DigestAdapter.new(Digest::SHA256)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RubyGemsVersion</td>
+          <td>=</td>
+          <td class="context-item-value">'1.1.1'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ConfigMap</td>
+          <td>=</td>
+          <td class="context-item-value">{} unless defined?(ConfigMap)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RbConfig</td>
+          <td>=</td>
+          <td class="context-item-value">Config unless defined? ::RbConfig</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DIRECTORIES</td>
+          <td>=</td>
+          <td class="context-item-value">%w[cache doc gems specifications] unless defined?(DIRECTORIES)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">MUTEX</td>
+          <td>=</td>
+          <td class="context-item-value">Mutex.new</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RubyGemsPackageVersion</td>
+          <td>=</td>
+          <td class="context-item-value">RubyGemsVersion</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">WIN_PATTERNS</td>
+          <td>=</td>
+          <td class="context-item-value">[     /bccwin/i,     /cygwin/i,     /djgpp/i,     /mingw/i,     /mswin/i,     /wince/i,   ]</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+An Array of Regexps that match windows <a href="Gem.html#M000077">ruby</a>
+<a href="Gem.html#M000072">platforms</a>.
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="aliases-list">
+      <h3 class="section-bar">External Aliases</h3>
+
+      <div class="name-list">
+                        <table summary="aliases">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">==</td>
+          <td>-&gt;</td>
+          <td class="context-item-value">eql?</td>
+        </tr>
+                        </table>
+      </div>
+    </div>
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">loaded_specs</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ssl_available</td>
+          <td class="context-item-value">&nbsp;[W]&nbsp;</td>
+          <td class="context-item-desc">
+Set the value of the ssl_avilable flag.
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000025" class="method-detail">
+        <a name="M000025"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000025.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000025.html');return false;">
+          <span class="method-name">_load</span><span class="method-args">(str)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Load custom marshal format, re-initializing defaults as needed
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000055.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000055.html');return false;">
+          <span class="method-name">activate</span><span class="method-args">(gem, *version_requirements)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Activates an installed gem matching <tt>gem</tt>. The gem must satisfy
+<tt>version_requirements</tt>.
+</p>
+<p>
+Returns true if the gem is activated, false if it is already loaded, or an
+exception otherwise.
+</p>
+<p>
+<a href="Gem.html#M000055">Gem#activate</a> adds the library paths in
+<tt>gem</tt> to $LOAD_PATH. Before a <a href="Gem.html">Gem</a> is
+activated its required Gems are activated. If the version information is
+omitted, the highest version <a href="Gem.html">Gem</a> of the supplied
+name is loaded. If a <a href="Gem.html">Gem</a> is not found that meets the
+version requirements or a required <a href="Gem.html">Gem</a> is not found,
+a <a href="Gem/LoadError.html">Gem::LoadError</a> is raised.
+</p>
+<p>
+More information on version requirements can be found in the <a
+href="Gem/Requirement.html">Gem::Requirement</a> and <a
+href="Gem/Version.html">Gem::Version</a> documentation.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000056.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000056.html');return false;">
+          <span class="method-name">all_load_paths</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+An Array of all possible <a href="Gem.html#M000037">load</a> paths for all
+versions of all gems in the <a href="Gem.html">Gem</a> installation.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000019.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000019.html');return false;">
+          <span class="method-name">array_attribute</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Same as :<a href="Gem.html#M000018">attribute</a>, but ensures that values
+assigned to the <a href="Gem.html#M000018">attribute</a> are array values
+by applying :to_a to the value.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000016" class="method-detail">
+        <a name="M000016"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000016.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000016.html');return false;">
+          <span class="method-name">array_attributes</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000018" class="method-detail">
+        <a name="M000018"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000018.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000018.html');return false;">
+          <span class="method-name">attribute</span><span class="method-args">(name, default=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Used to specify the name and default value of a specification <a
+href="Gem.html#M000018">attribute</a>. The side effects are:
+</p>
+<ul>
+<li>the name and default value are added to the @@<a
+href="Gem.html#M000022">attributes</a> <a href="Gem.html#M000017">list</a>
+and @@<a href="Gem.html#M000013">default_value</a> map
+
+</li>
+<li>a standard <em>writer</em> method (<tt>attribute=</tt>) is created
+
+</li>
+<li>a non-standard _reader method (<tt><a
+href="Gem.html#M000018">attribute</a></tt>) is created
+
+</li>
+</ul>
+<p>
+The reader method behaves like this:
+</p>
+<pre>
+  def attribute
+    @attribute ||= (copy of default value)
+  end
+</pre>
+<p>
+This allows lazy initialization of <a
+href="Gem.html#M000022">attributes</a> to their default values.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000024" class="method-detail">
+        <a name="M000024"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000024.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000024.html');return false;">
+          <span class="method-name">attribute_alias_singular</span><span class="method-args">(singular, plural)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Defines a <em>singular</em> version of an existing <em>plural</em> <a
+href="Gem.html#M000018">attribute</a> (i.e. one whose value is expected to
+be an array). This means just creating a helper method that takes a single
+value and appends it to the array. These are created for convenience, so
+that in a spec, one can write
+</p>
+<pre>
+  s.require_path = 'mylib'
+</pre>
+<p>
+instead of
+</p>
+<pre>
+  s.require_paths = ['mylib']
+</pre>
+<p>
+That above convenience is available courtesy of
+</p>
+<pre>
+  attribute_alias_singular :require_path, :require_paths
+</pre>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000012.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000012.html');return false;">
+          <span class="method-name">attribute_defaults</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000011.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000011.html');return false;">
+          <span class="method-name">attribute_names</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;- Convenience class
+methods.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000022.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000022.html');return false;">
+          <span class="method-name">attributes</span><span class="method-args">(*args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Shortcut for creating several <a href="Gem.html#M000022">attributes</a> at
+once (each with a default value of <tt>nil</tt>).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000057.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000057.html');return false;">
+          <span class="method-name">binary_mode</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The mode needed to read a file as straight binary.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000058.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000058.html');return false;">
+          <span class="method-name">bindir</span><span class="method-args">(install_dir=Gem.dir)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem.html#M000070">path</a> where gem executables are to be
+installed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000059.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000059.html');return false;">
+          <span class="method-name">clear_paths</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Reset the <tt><a href="Gem.html#M000064">dir</a></tt> and <tt><a
+href="Gem.html#M000070">path</a></tt> values. The next time <tt><a
+href="Gem.html#M000064">dir</a></tt> or <tt><a
+href="Gem.html#M000070">path</a></tt> is requested, the values will be
+calculated from scratch. This is mainly used by the unit tests to provide
+test isolation.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000060.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000060.html');return false;">
+          <span class="method-name">config_file</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem.html#M000070">path</a> to standard location of the
+user&#8216;s .gemrc file.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000061.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000061.html');return false;">
+          <span class="method-name">configuration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The standard <a href="Gem.html#M000061">configuration</a> object for gems.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000062.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000062.html');return false;">
+          <span class="method-name">configuration=</span><span class="method-args">(config)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Use the given <a href="Gem.html#M000061">configuration</a> object (which
+implements the <a href="Gem/ConfigFile.html">ConfigFile</a> protocol) as
+the standard <a href="Gem.html#M000061">configuration</a> object.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000063.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000063.html');return false;">
+          <span class="method-name">datadir</span><span class="method-args">(gem_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem.html#M000070">path</a> the the data directory specified by
+the gem name. If the package is not available as a gem, return nil.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000006.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000006.html');return false;">
+          <span class="method-name">default_bindir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The default directory for binaries
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000003.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000003.html');return false;">
+          <span class="method-name">default_dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Default home directory <a href="Gem.html#M000070">path</a> to be used if an
+alternate value is not specified in the environment.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000005.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000005.html');return false;">
+          <span class="method-name">default_exec_format</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Deduce Ruby&#8216;s &#8212;program-<a href="Gem.html#M000073">prefix</a>
+and &#8212;program-suffix from its install name.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000004.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000004.html');return false;">
+          <span class="method-name">default_path</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Default gem <a href="Gem.html#M000070">path</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000002.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000002.html');return false;">
+          <span class="method-name">default_sources</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+An Array of the default <a href="Gem.html#M000081">sources</a> that come
+with RubyGems.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000007.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000007.html');return false;">
+          <span class="method-name">default_system_source_cache_dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The default system-wide source info cache directory.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000008.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000008.html');return false;">
+          <span class="method-name">default_user_source_cache_dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The default user-specific source info cache directory.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000013" class="method-detail">
+        <a name="M000013"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000013.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000013.html');return false;">
+          <span class="method-name">default_value</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000064.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000064.html');return false;">
+          <span class="method-name">dir</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem.html#M000070">path</a> where gems are to be installed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000065.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000065.html');return false;">
+          <span class="method-name">ensure_gem_subdirectories</span><span class="method-args">(gemdir)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Quietly ensure the named <a href="Gem.html">Gem</a> directory contains all
+the proper subdirectories. If we can&#8216;t create a directory due to a
+permission problem, then we will silently continue.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000010.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000010.html');return false;">
+          <span class="method-name">ensure_ssl_available</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Ensure that <a href="Gem/SSL.html">SSL</a> is available. Throw an exception
+if it is not.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000036" class="method-detail">
+        <a name="M000036"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000036.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000036.html');return false;">
+          <span class="method-name">from_yaml</span><span class="method-args">(input)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Special loader for YAML files. When a Specification object is loaded from a
+YAML file, it bypasses the normal Ruby object initialization routine
+(initialize). This method makes up for that and deals with gems of
+different ages.
+</p>
+<p>
+&#8216;input&#8217; can be anything that YAML.load() accepts: String or IO.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000066.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000066.html');return false;">
+          <span class="method-name">latest_load_paths</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a <a href="Gem.html#M000017">list</a> of all possible <a
+href="Gem.html#M000037">load</a> paths for the latest version for all gems
+in the <a href="Gem.html">Gem</a> installation.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000017.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000017.html');return false;">
+          <span class="method-name">list</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+A <a href="Gem.html#M000017">list</a> of Specification instances that have
+been defined in this Ruby instance.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000037" class="method-detail">
+        <a name="M000037"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000037.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000037.html');return false;">
+          <span class="method-name">load</span><span class="method-args">(filename)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000067.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000067.html');return false;">
+          <span class="method-name">load_path_insert_index</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The index to insert activated gem paths into the $LOAD_PATH.
+</p>
+<p>
+Defaults to the site lib directory unless gem_prelude.rb has loaded paths,
+then it inserts the activated gem&#8216;s paths before the gem_prelude.rb
+paths so you can override the gem_prelude.rb default $LOAD_PATH paths.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000068.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000068.html');return false;">
+          <span class="method-name">manage_gems</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="Gem.html#M000068">manage_gems</a> is useless and deprecated.
+Don&#8216;t call it anymore.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000069" class="method-detail">
+        <a name="M000069"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000069.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000069.html');return false;">
+          <span class="method-name">marshal_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The version of the Marshal format for your Ruby.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000034" class="method-detail">
+        <a name="M000034"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000034.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000034.html');return false;">
+          <span class="method-name">new</span><span class="method-args">() {|self if block_given?| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Specification constructor. Assigns the default values to the <a
+href="Gem.html#M000022">attributes</a>, adds this spec to the <a
+href="Gem.html#M000017">list</a> of loaded specs (see Specification.list),
+and yields itself for further initialization.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000038" class="method-detail">
+        <a name="M000038"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000038.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000038.html');return false;">
+          <span class="method-name">normalize_yaml_input</span><span class="method-args">(input)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Make sure the yaml specification is properly formatted with dashes.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000023" class="method-detail">
+        <a name="M000023"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000023.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000023.html');return false;">
+          <span class="method-name">overwrite_accessor</span><span class="method-args">(name, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Some <a href="Gem.html#M000022">attributes</a> require special behaviour
+when they are accessed. This allows for that.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000070" class="method-detail">
+        <a name="M000070"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000070.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000070.html');return false;">
+          <span class="method-name">path</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Array of paths to search for Gems.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000072" class="method-detail">
+        <a name="M000072"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000072.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000072.html');return false;">
+          <span class="method-name">platforms</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Array of <a href="Gem.html#M000072">platforms</a> this RubyGems supports.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000071" class="method-detail">
+        <a name="M000071"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000071.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000071.html');return false;">
+          <span class="method-name">platforms=</span><span class="method-args">(platforms)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set array of <a href="Gem.html#M000072">platforms</a> this RubyGems
+supports (primarily for testing).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000073" class="method-detail">
+        <a name="M000073"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000073.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000073.html');return false;">
+          <span class="method-name">prefix</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The directory <a href="Gem.html#M000073">prefix</a> this RubyGems was
+installed at.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000075" class="method-detail">
+        <a name="M000075"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000075.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000075.html');return false;">
+          <span class="method-name">read_binary</span><span class="method-args">(path)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Safely read a file in binary mode on all <a
+href="Gem.html#M000072">platforms</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000021" class="method-detail">
+        <a name="M000021"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000021.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000021.html');return false;">
+          <span class="method-name">read_only</span><span class="method-args">(*names)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sometimes we don&#8216;t want the world to use a setter method for a
+particular <a href="Gem.html#M000018">attribute</a>. <tt><a
+href="Gem.html#M000021">read_only</a></tt> makes it private so we can still
+use it internally.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000074" class="method-detail">
+        <a name="M000074"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000074.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000074.html');return false;">
+          <span class="method-name">refresh</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Refresh <a href="Gem.html#M000080">source_index</a> from disk and clear <a
+href="Gem.html#M000079">searcher</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000020.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000020.html');return false;">
+          <span class="method-name">required_attribute</span><span class="method-args">(*args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Same as <a href="Gem.html#M000018">attribute</a> above, but also records
+this <a href="Gem.html#M000018">attribute</a> as mandatory.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000015" class="method-detail">
+        <a name="M000015"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000015.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000015.html');return false;">
+          <span class="method-name">required_attribute?</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000014" class="method-detail">
+        <a name="M000014"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000014.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000014.html');return false;">
+          <span class="method-name">required_attributes</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000076" class="method-detail">
+        <a name="M000076"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000076.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000076.html');return false;">
+          <span class="method-name">required_location</span><span class="method-args">(gemname, libfile, *version_constraints)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000077" class="method-detail">
+        <a name="M000077"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000077.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000077.html');return false;">
+          <span class="method-name">ruby</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem.html#M000070">path</a> to the running Ruby interpreter.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000078" class="method-detail">
+        <a name="M000078"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000078.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000078.html');return false;">
+          <span class="method-name">ruby_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+A <a href="Gem/Version.html">Gem::Version</a> for the currently running <a
+href="Gem.html#M000077">ruby</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000079" class="method-detail">
+        <a name="M000079"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000079.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000079.html');return false;">
+          <span class="method-name">searcher</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Gem/GemPathSearcher.html">GemPathSearcher</a> object used to
+search for matching installed gems.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000080" class="method-detail">
+        <a name="M000080"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000080.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000080.html');return false;">
+          <span class="method-name">source_index</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the <a href="Gem/SourceIndex.html">Gem::SourceIndex</a> of
+specifications that are in the <a href="Gem.html#M000070">Gem.path</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000081" class="method-detail">
+        <a name="M000081"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000081.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000081.html');return false;">
+          <span class="method-name">sources</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns an Array of <a href="Gem.html#M000081">sources</a> to fetch remote
+gems from. If the <a href="Gem.html#M000081">sources</a> <a
+href="Gem.html#M000017">list</a> is empty, attempts to <a
+href="Gem.html#M000037">load</a> the &quot;<a
+href="Gem.html#M000081">sources</a>&quot; gem, then uses <a
+href="Gem.html#M000002">default_sources</a> if it is not installed.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000009.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000009.html');return false;">
+          <span class="method-name">ssl_available?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Is <a href="Gem/SSL.html">SSL</a> (used by the signing commands) available
+on this platform?
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000082" class="method-detail">
+        <a name="M000082"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000082.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000082.html');return false;">
+          <span class="method-name">suffix_pattern</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Glob pattern for require-able <a href="Gem.html#M000070">path</a> <a
+href="Gem.html#M000083">suffixes</a>.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000083" class="method-detail">
+        <a name="M000083"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000083.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000083.html');return false;">
+          <span class="method-name">suffixes</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Suffixes for require-able paths.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000084" class="method-detail">
+        <a name="M000084"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000084.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000084.html');return false;">
+          <span class="method-name">use_paths</span><span class="method-args">(home, paths=[])</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Use the <tt>home</tt> and <tt>paths</tt> values for <a
+href="Gem.html#M000064">Gem.dir</a> and <a
+href="Gem.html#M000070">Gem.path</a>. Used mainly by the unit tests to
+provide environment isolation.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000085" class="method-detail">
+        <a name="M000085"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000085.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000085.html');return false;">
+          <span class="method-name">user_home</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The home directory for the user.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000086" class="method-detail">
+        <a name="M000086"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000086.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000086.html');return false;">
+          <span class="method-name">win_platform?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Is this a windows platform?
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000028" class="method-detail">
+        <a name="M000028"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000028.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000028.html');return false;">
+          <span class="method-name">add_bindir</span><span class="method-args">(executables)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000040" class="method-detail">
+        <a name="M000040"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000040.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000040.html');return false;">
+          <span class="method-name">add_dependency</span><span class="method-args">(gem, *requirements)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Adds a dependency to this <a href="Gem.html">Gem</a>. For example,
+</p>
+<pre>
+  spec.add_dependency('jabber4r', '&gt; 0.1', '&lt;= 0.5')
+</pre>
+<table>
+<tr><td valign="top">gem:</td><td>[String or <a href="Gem/Dependency.html">Gem::Dependency</a>] The <a
+href="Gem.html">Gem</a> name/dependency.
+
+</td></tr>
+<tr><td valign="top">requirements:</td><td>[default=&quot;&gt;= 0&quot;] The version requirements.
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000035" class="method-detail">
+        <a name="M000035"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000035.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000035.html');return false;">
+          <span class="method-name">assign_defaults</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Each <a href="Gem.html#M000018">attribute</a> has a default value (possibly
+nil). Here, we initialize all <a href="Gem.html#M000022">attributes</a> to
+their default value. This is done through the accessor methods, so special
+behaviours will be honored. Furthermore, we take a <em>copy</em> of the
+default so each specification instance has its own empty arrays, etc.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000051.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000051.html');return false;">
+          <span class="method-name">dependent_gems</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a <a href="Gem.html#M000017">list</a> of all gems that have a
+dependency on this gemspec. The <a href="Gem.html#M000017">list</a> is
+structured with entries that conform to:
+</p>
+<pre>
+  [depending_gem, dependency, [list_of_gems_that_satisfy_dependency]]
+</pre>
+<table>
+<tr><td valign="top">return:</td><td>[Array] [[dependent_gem, dependency, [list_of_satisfiers]]]
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000043" class="method-detail">
+        <a name="M000043"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000043.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000043.html');return false;">
+          <span class="method-name">file_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The default (generated) file name of the gem.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000053.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000053.html');return false;">
+          <span class="method-name">find_all_satisfiers</span><span class="method-args">(dep) {|gem| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000042" class="method-detail">
+        <a name="M000042"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000042.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000042.html');return false;">
+          <span class="method-name">full_gem_path</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The full <a href="Gem.html#M000070">path</a> to the gem (install <a
+href="Gem.html#M000070">path</a> + full name).
+</p>
+<table>
+<tr><td valign="top">return:</td><td>[String] the full gem <a href="Gem.html#M000070">path</a>
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000041" class="method-detail">
+        <a name="M000041"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000041.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000041.html');return false;">
+          <span class="method-name">full_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the full name (name-version) of this <a href="Gem.html">Gem</a>. <a
+href="Gem/Platform.html">Platform</a> information is included
+(name-version-platform) if it is specified (and not the default Ruby
+platform).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000031" class="method-detail">
+        <a name="M000031"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000031.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000031.html');return false;">
+          <span class="method-name">has_rdoc?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000033" class="method-detail">
+        <a name="M000033"></a>
+
+        <div class="method-heading">
+          <span class="method-name">has_test_suite?</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for has_unit_tests?
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000032" class="method-detail">
+        <a name="M000032"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000032.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000032.html');return false;">
+          <span class="method-name">has_unit_tests?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000044" class="method-detail">
+        <a name="M000044"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000044.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000044.html');return false;">
+          <span class="method-name">installation_path</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The root directory that the gem was installed into.
+</p>
+<table>
+<tr><td valign="top">return:</td><td>[String] the installation <a href="Gem.html#M000070">path</a>
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000029" class="method-detail">
+        <a name="M000029"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000029.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000029.html');return false;">
+          <span class="method-name">lib_files</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Files in the <a href="Gem.html">Gem</a> under one of the require_paths
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000030" class="method-detail">
+        <a name="M000030"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000030.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000030.html');return false;">
+          <span class="method-name">loaded?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Predicates
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000039" class="method-detail">
+        <a name="M000039"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000039.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000039.html');return false;">
+          <span class="method-name">mark_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the rubygems_version to Gem::RubyGemsVersion.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000050.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000050.html');return false;">
+          <span class="method-name">normalize</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Normalize the <a href="Gem.html#M000017">list</a> of files so that:
+</p>
+<ul>
+<li>All file lists have redundancies removed.
+
+</li>
+<li>Files referenced in the extra_rdoc_files are included in the package file
+<a href="Gem.html#M000017">list</a>.
+
+</li>
+</ul>
+<p>
+Also, the summary and description are converted to a normal format.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000054.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000054.html');return false;">
+          <span class="method-name">ruby_code</span><span class="method-args">(obj)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a string containing a Ruby code representation of the given object.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000047.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000047.html');return false;">
+          <span class="method-name">same_attributes?</span><span class="method-args">(other)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000045.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000045.html');return false;">
+          <span class="method-name">satisfies_requirement?</span><span class="method-args">(dependency)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Checks if this Specification meets the requirement of the supplied
+dependency.
+</p>
+<table>
+<tr><td valign="top">dependency:</td><td>[<a href="Gem/Dependency.html">Gem::Dependency</a>] the dependency to check
+
+</td></tr>
+<tr><td valign="top">return:</td><td>[Boolean] true if dependency is met, otherwise false
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000046" class="method-detail">
+        <a name="M000046"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000046.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000046.html');return false;">
+          <span class="method-name">sort_obj</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Comparison methods
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000026.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000026.html');return false;">
+          <span class="method-name">test_suite_file</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+DEPRECATED gemspec <a href="Gem.html#M000022">attributes</a>
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000027" class="method-detail">
+        <a name="M000027"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000027.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000027.html');return false;">
+          <span class="method-name">test_suite_file=</span><span class="method-args">(val)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000048.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000048.html');return false;">
+          <span class="method-name">to_ruby</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a Ruby code representation of this specification, such that it can
+be eval&#8216;ed and reconstruct the same specification later. Attributes
+that still have their default values are omitted.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000052.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000052.html');return false;">
+          <span class="method-name">to_s</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="Gem.src/M000049.html" target="Code" class="method-signature"
+            onclick="popupCode('Gem.src/M000049.html');return false;">
+          <span class="method-name">validate</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Checks that the specification contains all required fields, and does a very
+basic sanity check.
+</p>
+<p>
+Raises <a
+href="Gem/InvalidSpecificationException.html">InvalidSpecificationException</a>
+if the spec does not pass the checks..
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+[13-Dec-2015 22:03:59] PHP Warning:  PHP Startup: Unable to load dynamic library '/usr/php/54/usr/lib64/php/modules/imagick.so' - /usr/php/54/usr/lib64/php/modules/imagick.so: undefined symbol: zend_new_interned_string in Unknown on line 0
+[13-Dec-2015 22:03:59] PHP Fatal error:  Call to undefined function _deprecated_file() in /home5/voolamed/public_html/hublistingservice/wp-includes/rss-functions.php on line 8

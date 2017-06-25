@@ -1,0 +1,10 @@
+---
+command: 'zip -@0yq - '
+digest_sha: fa5f063827667f02c305b5a141143075de617909
+errors: "zip warning: Permission denied\n"
+files:
+  - /backup6/cpbackup/daily/voolamed
+initiated: 1345144519
+size_bytes: 783494468
+terminated: success
+type: zip

@@ -1,0 +1,15 @@
+name = hub listing 
+description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. 
+base theme = kalatheme 
+core = 7.x 
+
+regions[header] = header
+regions[content] = Content 
+
+
+
+
+stylesheets[all][] = css/main.css
+scripts[] = js/script.js
+ 
+

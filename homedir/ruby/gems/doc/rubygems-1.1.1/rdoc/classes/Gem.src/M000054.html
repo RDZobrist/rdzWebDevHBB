@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>ruby_code (Gem)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rubygems/specification.rb, line 953</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ruby_code</span>(<span class="ruby-identifier">obj</span>)
+      <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">obj</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>            <span class="ruby-keyword kw">then</span> <span class="ruby-value str">'%q{'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">obj</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'}'</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>             <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">inspect</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Gem</span><span class="ruby-operator">::</span><span class="ruby-constant">Version</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">inspect</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Date</span>              <span class="ruby-keyword kw">then</span> <span class="ruby-value str">'%q{'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">'%Y-%m-%d'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'}'</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Time</span>              <span class="ruby-keyword kw">then</span> <span class="ruby-value str">'%q{'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">'%Y-%m-%d'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'}'</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Numeric</span>           <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">inspect</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">nil</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">inspect</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Gem</span><span class="ruby-operator">::</span><span class="ruby-constant">Platform</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;Gem::Platform.new(#{obj.to_a.inspect})&quot;</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Gem</span><span class="ruby-operator">::</span><span class="ruby-constant">Requirement</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;Gem::Requirement.new(#{obj.to_s.inspect})&quot;</span>
+      <span class="ruby-keyword kw">else</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>, <span class="ruby-node">&quot;ruby_code case not handled: #{obj.class}&quot;</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

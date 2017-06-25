@@ -1,0 +1,117 @@
+<?php
+function custom_form_alter(&$form, &$form_state, $form_id)
+{
+  if($form_id =='user_register_form')
+  {
+  $form['actions']['submit']['#value'] = 'Create Account';
+      
+      $form['account']['name']['#title'] = 'Screenname';
+      $form['account']['name']['#description'] = '(Screennames are permanent)';
+      $form['account']['mail']['#description'] = '(This is your logging name)';     
+  }
+  if($form_id =='user_pass_reset')
+  {
+    $form['actions']['submit']['#value'] = 'Submit Password and Log In';
+        $_SESSION['redirect_after_submit'] = TRUE;
+  }
+  if($form_id =='classified_node_form')
+  {
+    $form['options']['status']['#access'] = FALSE;
+    }
+///////////////// SOC mail on each form on home and ads page /////////////////////
+
+
+  if (($form_id == 'webform_client_form_63') || ($form_id == 'webform_client_form_61')){ //ads page SCHEDULE A VIEWING form
+    // dsm($form);
+      $cid = $_REQUEST['cads'];   // nid for ads detail page
+      $dashid = $_REQUEST['dash'];   // nid for homepage dashboard page
+      //dsm($form);
+        if($_REQUEST['cads']){
+          $node=node_load($cid);
+          //dsm($node);
+          $author = user_load_by_name($node->name);
+          // dsm($author);
+          $author_mail = $author->mail;
+          // dsm($author_mail);
+          // dsm($form);
+          $form['submitted']['agent_email']['#default_value'] = $author_mail;
+        }
+
+        if($_REQUEST['dash']){
+          $nodedash = node_load($dashid);
+          //dsm($nodedash);
+          $agentmail = $nodedash->field_email['und'][0]['email'];
+          // dsm($form);
+          $form['submitted']['agent_email']['#default_value'] = $agentmail;
+        }
+  }
+
+  if ($form_id == 'webform_client_form_21') { // Get more information form
+    // dsm($form);
+
+      if (drupal_is_front_page()){ // default mail id on home page
+
+
+          $node_type = "homepage_dashboard"; 
+          $result = db_query("SELECT nid FROM node WHERE type = :nodeType ", array(':nodeType'=>$node_type)); 
+
+          $nids = array();
+          foreach ($result as $obj) {
+            $nids[] = $obj->nid;
+          }
+          // dsm($nids);
+          $count = count($nids) -1;
+          $nid = $nids[$count];
+          // dsm($nid);
+
+          $nodedash=node_load($nid);
+          // dsm($nodedash);
+          $agentmail = $nodedash->field_email['und'][0]['email'];
+          // dsm($agentmail);
+          $form['submitted']['agent_email']['#default_value'] = $agentmail;
+      }
+
+      else {
+
+          // dsm($form);
+          $node=node_load(arg(1));
+          //dsm($node);
+          $author = user_load_by_name($node->name);
+          $author_mail = $author->mail;
+          // dsm($author_mail);
+          $form['submitted']['agent_email']['#default_value'] = $author_mail;
+      }
+
+  }
+///////////////// EOC mail on each form on home and ads page /////////////////////
+
+}
+
+function custom_block_info() {
+  $blocks = array();
+  $blocks['user_reset_pass'] = array(
+    'info' => t('Reset Password Message'),
+  );
+  return $blocks;
+}
+function custom_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'user_reset_pass':
+      $block['subject'] = '';
+      $block['content'] = my_module_content();
+      break;
+  }
+  return $block;
+}
+function my_module_content() {
+  $user_details =user_load(arg(2));
+  $user_email = $user_details->mail; 
+  $output = '<div class="main_text"><strong>Thanks for signing up for a HUB Listing Service  account.</strong></div>
+
+<div class="second">A link to activate your account has just been emailed to '.$user_email.'</div>
+
+<div class="third">If you experience any problems or have any questions , please contact help@hublistingservice.com</div>
+Please enter a new password of your own choosing. Your new password must be 8 characters or more .';
+  return $output;
+}

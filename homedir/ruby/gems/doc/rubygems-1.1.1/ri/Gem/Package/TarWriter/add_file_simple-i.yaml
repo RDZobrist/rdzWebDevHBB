@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: os if block_given?
+comment: 
+full_name: Gem::Package::TarWriter#add_file_simple
+is_singleton: false
+name: add_file_simple
+params: (name, mode, size) {|os if block_given?| ...}
+visibility: public

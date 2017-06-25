@@ -1,0 +1,166 @@
+/*
+THEME NAME: Video Wordpress Theme
+THEME URI: http://foxinni.com/my-themes/video-wordpress-themevideo-wordpress-theme/
+DESCRIPTION: Based on Sandbox, this video theme is an easy and quick somution to your Vlogging needs. Please make use of the Video Theme Settings page for themes.
+TAGS: widgets, sandbox, video
+VERSION: 1.0
+AUTHOR: <a href="http://foxinni.com/">Foxinni</a> &amp; <a href="http://videos.blueworld.co.za/">Videos.Blueworld</a>
+AUTHOR URI:
+*/
+
+/* Two-column with sidebar on left from the /sandbox-layouts/ folder  */
+body { font-size:12px; font-family:"Trebuchet MS", Verdana, Arial; margin:0; padding:0; background-color:#b1e2fe;  background-repeat:no-repeat;
+ background-position: center top}
+
+.hfeed { width:960px; margin:0 auto 0}
+
+div#container, .home .post-content {	float: left;	width: 580px ;}
+/* Just some example content */
+div.header-bg { background:url(images/blue-light/header.gif) repeat-x bottom; height:84px;}
+div#header{text-align:left;  width:960px; margin:0 auto; }
+h1#blog-title { margin:0; padding-top:4px; font-variant:small-caps; text-decoration:none!important; font-size:28px}
+h1#blog-title a:link,h1#blog-title a:visited { text-decoration: none; color:#666666}
+h1#blog-title a:hover,h1#blog-title a:active { text-decoration: none; color:#000}
+div#blog-description { text-transform:uppercase;font-size:10px; color:#999; height:22px }
+*+html div#blog-description { text-transform:uppercase;font-size:10px; color:#999; height:18px }
+h2 { font-weight:100;}
+h3 {margin:0px 0px 20px; font-size:18px; font-weight:100}
+
+.related_posts { padding-top:8px; }
+.archive .related_posts { padding-top:0px; }
+.related_posts h3 { text-align:left!important; font-size:14px}
+.related_posts ul li { font-size:12px;padding:0px 0 4px!important; margin:0!important; list-style:square inside!important; }
+.related_posts ul li a:link { text-decoration:none}
+div#menu{ margin:0}
+div#menu ul a{font-weight:700;text-decoration:none;}
+div#menu ul,div#menu ul ul,div#menu ul li{list-style:none;margin:0;padding:0;}
+div#menu ul li{float:left; margin-right:4px;}
+* html div#menu ul li { padding:4px 0}
+*+html div#menu ul li { padding:4px 0}
+div#menu ul li.right{float:right; margin-right:0px; margin-left:4px}
+div#menu ul li a:link, div#menu ul li a:visited{ font-size: 12px;  color:#333; padding:4px 12px;margin:0}
+div#menu ul li a:hover,div#menu ul li a:active { font-size: 12px;  color:#000; background: url(images/nav_hover.gif) bottom repeat-x}
+ div#menu ul li.current_page_item a:link, div#menu ul li.current_page_item a:visited{ font-size: 12px;  color:#666;  background: url(images/nav.gif) bottom repeat-x}
+div#menu ul ul{display:none;}
+div#menu ul ul li{float:none;}
+div#menu ul ul li a{margin:0;padding:0;}
+div#menu ul li:hover ul{display:block;position:absolute;}
+div#menu ul li:hover ul li a{border:none;display:block;padding:0.1em;width:10em;}
+
+.entry-title{clear:both;}
+
+div#nav-below{width:100%;height:1.2em;  font-size:18px; margin-bottom:16px; width:580px; }
+div#nav-below a:link,div#nav-below a:visited  { color:white; text-decoration:none}
+div#nav-below a:hover,div#nav-below a:active  { color:#ccc; }
+
+.alignleft,div.nav-previous{float: left;}
+.alignright,div.nav-next{float: right;}
+
+form#commentform .form-label{margin:1em 0 0;}
+form#commentform span.required{color:red;}
+form#commentform,form#commentform p{padding:0;}
+
+input#author,input#email,input#url{width:50%; border:1px #ccc solid; background:#eee;}
+input#author,input#email,input#url,textarea#comment{padding:0.2em;}
+textarea#comment{ border:1px #ccc solid; background:#eee}
+
+input#s {border:0px #ccc solid; background:#eee; width:200px; padding:3px 2px 2px	 }
+* html input#s { padding:5px 4px 4px}
+.text-input { border:0px #ccc solid; background:#eee; padding:3px 2px 2px}
+* html .text-input  { padding:5px 4px 4px}
+
+
+div.comments ol { margin:0; padding:0}
+div.comments ol li{margin:0; list-style:none; background:#fff; padding:0; }
+div.comments ol li .comment_body { padding:0 10px; font-size:18px;}
+div.comments ol li .comment-meta { font-size:12px}
+div.comments ol li img.avatar { float:right; margin-left:10px; }
+div.comments ol li p { margin: 0px 0px 10px}
+textarea#comment{height:13em;margin:0 0 0.5em;overflow:auto;width:66%;}
+
+#respond p {margin: 0 0 10px; }
+#respond h3 {color: #fff}
+
+.formcontainer {background:#FFFFFF; padding: 0px 10px; margin:0} 
+#commentform { margin:0 }
+/* hACKS*/
+
+div.comments ol li .comment_body:after { content:"."; display:block; visibility:hidden; height:0; clear:both}
+* html div.comments ol li  .comment_body{ height:1px; min-height:1%}
+*+html div.comments ol li  .comment_body{ height:1px; min-height:1%}
+
+
+div#primary	{	clear: right; width:366px; margin-top:12px;}
+div#secondary	{	clear: right;width:366px}
+div.sidebar {	float: right;	overflow: hidden;	width: 380px;}
+
+div.sidebar h3,div.sidebar ul,div.sidebar li{margin:0;padding:0;}
+div.sidebar h3{font-size:18px; text-align:right; border-bottom:1px #eee solid; font-weight:100}
+div.sidebar input#s{width:200px;}
+div.sidebar li{list-style:none;margin:0 0 1em;}
+div.sidebar li form{margin:0.2em 0 0;padding:0;}
+div.sidebar ul ul{margin:0 0 0 1em;}
+div.sidebar ul ul li{list-style: square;margin:0;}
+div.sidebar ul ul ul{margin:0 0 0 0.5em;}
+div.sidebar ul ul ul li{list-style:circle;}
+
+div#footer{text-align:center;clear: both;}
+
+.padding { padding:12px}
+
+.post-content { background:#FFFFFF; padding:0; width:580px;float:left }
+.video-content { margin:60px 0 40px; background:#FFFFFF; /*min-height:270px*/}
+/* html .video-content { height:270px} */
+.sidebar .video-content {margin:8px 0 12px;}
+#video_widget ul { margin:0}
+#video_widget ul li { list-style:none}
+#video_widget ul li h4 { margin:4px 0px; font-size:16px}
+
+
+.post .video-content { padding:60px 0 40px; margin:0; }
+.single-entry-meta { margin-top:4px; padding-top:5px; border-top: 1px solid #eee; color:#999; font-size:10px}
+abbr { border:0}
+
+.clear { clear:both}
+
+ .page .post-content{ background:#FFFFFF;  }
+.archive .p1 .post-header,  .page .p1 .post-header { background:#fff}
+
+.the-post { background:#FFFFFF; padding:10px 10px 0px 0px; overflow:hidden}
+.entry-meta { background:#e5e5e5 url(images/blue-light/sb_footer_a.gif) no-repeat right top;padding:20px 10px 10px;  }
+
+h2 { margin:0}
+.entry-content p { margin:4px 0}
+.post-footer { background:#fff url(images/blue-light/post_footer.gif) no-repeat center top; height: 34px; margin:0; clear:both  }
+.post-header { background:#fff url(images/blue-light/post_top.gif) no-repeat center top; height: 10px;margin:0;  }
+.post-side-footer-b { background: url(images/blue-light/sb_footer_b.gif) no-repeat right top; height: 24px;margin:0; }
+.side-top { background:#fff url(images/blue-light/sb_top.gif) no-repeat center top; height: 20px;}
+.side-bot { background: url(images/blue-light/sb_bottom.gif) no-repeat center top; height: 34px;}
+.post-content { min-height:200px;}
+* html .post-content { height:200px;}
+
+
+.home .p1 .video-content ,.archive .p1 .video-content{ background: #fff  none;}
+.home .p1 .the-post,.archive .p1 .the-post { background:#fff none;}
+.home .video-content,.archive .video-content { background: #fff url(images/blue-light/top_left.gif) no-repeat left top;}
+.home .the-post, .archive .the-post { background:#fff url(images/blue-light/top_right.gif) no-repeat right top;}
+
+
+.sidebar ul.xoxo { background:#FFFFFF; padding: 0 10px 18px;}
+
+a:link, a:visited { color:#666666}
+a:hover, a:active { color:#000}
+/* New gallery feature styles; Can't use div.attachment because shortcodes can link to galleries in other posts */
+div.gallery{clear:both;float:left;width:100%;}
+div.gallery dl{float:left;text-align:center;}
+div.gallery dl dt{margin:0;}
+div.gallery dl dd{margin-left:0;}
+div.entry-attachment,div.entry-caption{text-align:center;}
+div.entry-attachment img,div#nav-images div img{overflow:hidden;}
+body.attachment div#nav-images{clear:both;width:100%;}
+body.attachment div#nav-images div{padding:1em 0;width:50%;}
+body.attachment div#nav-images div.nav-previous{text-align:left;}
+body.attachment div#nav-images div.nav-next{text-align:right;}
+body.attachment div.entry-meta,body.attachment div#comments{clear:both;}
+.c-f { margin-top:-16px; text-align:center; font-size:10px; text-transform: capitalize;color:#fff;  border-top:1px solid #fff;}
+.c-f a:link,.c-f a:hover,.c-f a:active,.c-f a:visited { text-decoration:none; color:#fff} 

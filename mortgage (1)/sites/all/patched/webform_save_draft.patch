@@ -1,0 +1,440 @@
+diff --git a/includes/webform.pages.inc b/includes/webform.pages.inc
+index 782dfb9..78ff87f 100644
+--- a/includes/webform.pages.inc
++++ b/includes/webform.pages.inc
+@@ -337,7 +337,7 @@ function webform_configure_form($form, &$form_state, $node) {
+     '#type' => 'checkbox',
+     '#title' => t('Show "Save draft" button'),
+     '#default_value' => $node->webform['allow_draft'],
+-    '#description' => t('Allow your users to save and finish the form later. This option is available only for authenticated users.'),
++    '#description' => t('Allow your users to save and finish the form later. This option may impact performance because it may cause a large number of sessions to bypass caching, especially for multipage forms.'),
+   );
+   $form['advanced']['auto_save'] = array(
+     '#type' => 'checkbox',
+@@ -538,7 +538,7 @@ function webform_configure_form_submit_save($form, &$form_state) {
+   drupal_set_message(t('The form settings have been updated.'));
+ 
+   $node = &$form['#node'];
+-  if (!$node->webform['block'] && function_exists('block_load') && 
++  if (!$node->webform['block'] && function_exists('block_load') &&
+       ($block = block_load('webform', 'client-block-' . $node->nid)) &&
+       !empty($block->bid)) {
+     // An existing block for this not-currently-available block was already configured.
+diff --git a/tests/draft.test b/tests/draft.test
+new file mode 100644
+index 0000000..4e2f640
+--- /dev/null
++++ b/tests/draft.test
+@@ -0,0 +1,113 @@
++<?php
++
++/**
++ * @file
++ * Webform module submission tests.
++ */
++
++include_once(dirname(__FILE__) . '/webform.test');
++
++class WebformDraftTestCase extends WebformTestCase {
++  /**
++   * Implements getInfo().
++   */
++  public static function getInfo() {
++    return array(
++      'name' => t('Webform drafts'),
++      'description' => t('Save draft a sample webform.'),
++      'group' => t('Webform'),
++    );
++  }
++
++  /**
++   * Implements setUp().
++   */
++  function setUp($added_modules = array()) {
++    parent::setUp($added_modules);
++  }
++
++  /**
++   * Implements tearDown().
++   */
++  function tearDown() {
++    parent::tearDown();
++  }
++
++  /**
++   * Test saving a draft as an authenicated user.
++   */
++  function testWebformDraftAuthenicatedUser() {
++    $this->drupalLogin($this->webform_users['userAccess']);
++    $this->testWebformDraft();
++    $this->drupalLogout();
++  }
++
++  /**
++   * Test saving a draft.
++   */
++  function testWebformDraft() {
++    $this->webformReset();
++
++    // Create a new Webform test node.
++    $node = $this->testWebformForm();
++
++    // Visit the node page.
++    $this->drupalGet('node/' . $node->nid);
++
++    // Save draft.
++    $submission_values = $this->testWebformPost();
++    $this->drupalPost(NULL, $submission_values, 'Save Draft', array(), array(), 'webform-client-form-' . $node->nid);
++
++    // Confirm that the draft has been created.
++    $this->assertText(t('Submission saved. You may return to this form later and it will restore the current values.'), t('Submission saved'), t('Webform'));
++
++    // Visit the node page.
++    $this->drupalGet('node/' . $node->nid);
++
++    // Test the form was retrieved.
++    $this->assertFieldChecked('edit-submitted-grid-0-1');
++    $this->assertFieldChecked('edit-submitted-grid-1-2');
++    $this->assertFieldChecked('edit-submitted-grid-2-3');
++    $this->assertFieldChecked('edit-submitted-select-email-2');
++    $this->assertOptionSelected('edit-submitted-select-optgroup', 'option 2-2');
++    $this->assertOptionSelected('edit-submitted-select-zero', '0');
++    $this->assertOptionSelected('edit-submitted-select-no-default', 'two');
++    $this->assertOptionSelected('edit-submitted-select-no-default-zero', '0');
++    $this->assertFieldChecked('edit-submitted-checkboxes-1');
++    $this->assertNoFieldChecked('edit-submitted-checkboxes-2');
++    $this->assertFieldChecked('edit-submitted-checkboxes-3');
++    $this->assertFieldChecked('edit-submitted-grid-keyed-one-1');
++    $this->assertFieldChecked('edit-submitted-grid-keyed-two-2');
++    $this->assertFieldChecked('edit-submitted-grid-keyed-three-3');
++    $this->assertOptionSelected('edit-submitted-date-month', '9');
++    $this->assertOptionSelected('edit-submitted-date-day', '30');
++    $this->assertOptionSelected('edit-submitted-date-year', '1982');
++    $this->assertOptionSelected('edit-submitted-select', 'two');
++    $this->assertOptionSelected('edit-submitted-select-multiple', 'one');
++    $this->assertOptionSelected('edit-submitted-select-multiple', 'two');
++    $this->assertFieldChecked('edit-submitted-radios-zero-1');
++    $this->assertOptionSelected('edit-submitted-select-relative', 'one');
++    $this->assertFieldChecked('edit-submitted-radios-1');
++    $this->assertFieldChecked('edit-submitted-checkboxes-zero-1');
++    $this->assertNoFieldChecked('edit-submitted-checkboxes-zero-2');
++    $this->assertNoFieldChecked('edit-submitted-checkboxes-zero-3');
++    $this->assertFieldChecked('edit-submitted-radios-relative-2');
++    $this->assertOptionSelected('edit-submitted-date-textfield-month', '9');
++    $this->assertOptionSelected('edit-submitted-date-textfield-day', '30');
++    $this->assertFieldById('edit-submitted-date-textfield-year', '1982');
++    $this->assertFieldById('edit-submitted-textfield-profile', 'Female');
++    $this->assertFieldById('edit-submitted-email', 'admin@localhost.localhost');
++    $this->assertFieldById('edit-submitted-textarea', 'sample textarea value');
++    $this->assertOptionSelected('edit-submitted-time-hour', '12');
++    $this->assertOptionSelected('edit-submitted-time-minute', '0');
++    $this->assertFieldChecked('edit-submitted-time-ampm-pm');
++    $this->assertOptionSelected('edit-submitted-time-24h-hour', '5');
++    $this->assertOptionSelected('edit-submitted-time-24h-minute', '0');
++    $this->assertFieldById('edit-submitted-integer', '2');
++    $this->assertOptionSelected('edit-submitted-integer-range', '10');
++    $this->assertFieldById('edit-submitted-decimal-positive', '2.00');
++    $this->assertOptionSelected('edit-submitted-decimal-range-select', '10');
++    $this->assertFieldById('edit-submitted-decimal-range', '11.5');
++  }
++
++}
+diff --git a/tests/webform.test b/tests/webform.test
+index cfad131..099c15e 100644
+--- a/tests/webform.test
++++ b/tests/webform.test
+@@ -1010,6 +1010,7 @@ class WebformTestCase extends DrupalWebTestCase {
+      'format' => '1',
+      'webform' => array(
+         'confirmation' => 'Thanks!',
++         'allow_draft' => 1,
+       ) + webform_node_defaults(),
+     );
+ 
+diff --git a/webform.info b/webform.info
+index 3371e69..647438f 100644
+--- a/webform.info
++++ b/webform.info
+@@ -36,6 +36,7 @@ files[] = views/webform.views.inc
+ 
+ files[] = tests/components.test
+ files[] = tests/conditionals.test
++files[] = tests/draft.test
+ files[] = tests/permissions.test
+ files[] = tests/submission.test
+ files[] = tests/webform.test
+diff --git a/webform.install b/webform.install
+index af77efa..24b0fd6 100644
+--- a/webform.install
++++ b/webform.install
+@@ -590,6 +590,13 @@ function webform_schema() {
+         'type' => 'varchar',
+         'length' => 128,
+       ),
++      'session_id' => array(
++        'description' => 'For anonymous submissions, the drupal session id.',
++        'type' => 'varchar',
++        'length' => '128',
++        'not null' => TRUE,
++        'default' => 0,
++      ),
+     ),
+     'primary key' => array('sid'),
+     'unique keys' => array(
+@@ -2326,3 +2333,22 @@ function webform_update_7430() {
+ 
+   return t('Webform emails may now be disabled.');
+ }
++
++/**
++ * Add a column to the submission table to store the session id of anonymous
++ * submissions. Sites with many, many submissions may wish to execute this
++ * update with 'drush updatedb'.
++ */
++function webform_update_7431() {
++  // Add session_id column to webform_submissions.
++  if (!db_field_exists('webform_submissions', 'session_id')) {
++    $spec = array(
++      'description' => 'For anonymous submissions, the drupal session id.',
++      'type' => 'varchar',
++      'length' => '128',
++      'not null' => TRUE,
++      'default' => 0,
++    );
++    db_add_field('webform_submissions', 'session_id', $spec);
++  }
++}
+diff --git a/webform.module b/webform.module
+index 56f4b17..53577bc 100644
+--- a/webform.module
++++ b/webform.module
+@@ -749,6 +749,69 @@ function webform_permission() {
+ }
+ 
+ /**
++ * Implements hook_cron().
++ */
++function webform_cron() {
++  // Query for anonymous draft webform submissions with 1) without associated
++  // sessions or 2) with expired sessions. Expired sessions may or may not exist
++  // depending on how often PHP garbage collection is configured to remove
++  // sessions.
++  $query = db_select('webform_submissions', 'ws');
++  $query->fields('ws', array('nid', 'sid'));
++  $query->condition('ws.uid', 0, '=');
++  $query->condition('ws.is_draft', 1, '=');
++  $query->leftJoin('sessions', 's', 's.sid = ws.session_id');
++
++  // Query for webform submissions without matching session records or with
++  // expired sessions.
++  $db_or = db_or();
++  $db_or->isNull('s.sid');
++  $cookie_info = session_get_cookie_params();
++  $db_or->condition('s.timestamp', REQUEST_TIME + $cookie_info['lifetime'], '<');
++  $query->condition($db_or);
++
++  $result = $query->execute();
++  $count = $result->rowCount();
++
++  $queue = DrupalQueue::get('webform_delete_submission');
++  foreach ($result as $row) {
++    // Queue the submission for deletion.
++    $queue->createItem($row);
++  }
++  if ($count > 0) {
++    watchdog('webform', 'Queued !count stale anonymous drafts.', array('!count' => $count));
++  }
++}
++
++/**
++ * Implements hook_cron_queue_info().
++ */
++function webform_cron_queue_info() {
++  $queues['webform_delete_submission'] = array(
++    'worker callback' => 'webform_delete_submission_run',
++     'time' => 60,
++  );
++  return $queues;
++}
++
++/**
++ * Worker callback for the delete_submission queue.
++ *
++ * @param object $item
++ *   Queue data with Node ID and Submission ID properties.
++ */
++function webform_delete_submission_run(stdClass $item) {
++  module_load_include('inc', 'webform', 'includes/webform.submissions');
++
++  $node = node_load($item->nid);
++  $submission = webform_get_submission($item->nid, $item->sid);
++  if ($node) {
++    webform_submission_delete($node, $submission);
++    watchdog('webform', 'Deleted a stale anonymous draft.');
++  }
++}
++
++/**
+  * Implements hook_theme().
+  */
+ function webform_theme() {
+@@ -1964,13 +2027,32 @@ function webform_node_view($node, $view_mode) {
+ 
+   // Check if this user has a draft for this webform.
+   $resume_draft = FALSE;
+-  if (($node->webform['allow_draft'] || $node->webform['auto_save']) && $user->uid != 0) {
++  $draft_sid = FALSE;
++  if (($node->webform['allow_draft'] || $node->webform['auto_save'])) {
+     // Draft found - display form with draft data for further editing.
+-    if ($draft_sid = _webform_fetch_draft_sid($node->nid, $user->uid)) {
++    if ($user->uid != 0) {
++      $draft_sid = _webform_fetch_draft_sid($node->nid, $user->uid);
++    }
++    // On first form load for anonymous user, _SESSION has not been set.
++    if (!$draft_sid && isset($_SESSION['webform_submission'])) {
++      // To use legacy key=value order as [sid]=nid.
++      $tmp_s = array_flip($_SESSION['webform_submission']);
++      // Make sure the draft is for the current form.
++      $draft_sid = (isset($tmp_s[$node->nid])) ? $tmp_s[$node->nid] : 0;
++    }
++    if ($draft_sid) {
+       module_load_include('inc', 'webform', 'includes/webform.submissions');
+       $submission = webform_get_submission($node->nid, $draft_sid);
+       $enabled = TRUE;
+       $resume_draft = TRUE;
++      // If user created draft as anonymous and is now logged in, change the
++      // user ID for this submission.
++      if ($user->uid != 0 && $submission->uid != $user->uid) {
++        $submission->uid = $user->uid;
++        // Save the submission now, so that the user ID is saved even if they
++        // don't press 'save as draft' again.
++        webform_submission_update($node, $submission);
++      }
+     }
+   }
+ 
+@@ -2265,7 +2347,7 @@ function webform_block_view($delta = '') {
+         '#node' => $node,
+         '#sid' => $_SESSION['webform_confirmation'][$nid]['sid'],
+       );
+-    } 
++    }
+     elseif (strlen(trim(strip_tags($node->webform['confirmation'])))) {
+       // Display confirmation link drupal status messages, but in the block.
+       $message = webform_replace_tokens($node->webform['confirmation'],
+@@ -2647,7 +2729,7 @@ function webform_client_form($form, &$form_state, $node, $submission = FALSE, $r
+     );
+ 
+     // Add the draft button.
+-    if ($node->webform['allow_draft'] && (empty($submission) || $submission->is_draft) && $user->uid != 0) {
++    if ($node->webform['allow_draft'] && (empty($submission) || $submission->is_draft)) {
+       $form['actions']['draft'] = array(
+         '#type' => 'submit',
+         '#value' => t('Save Draft'),
+@@ -3217,7 +3299,7 @@ function webform_client_form_pages($form, &$form_state) {
+ 
+   // Inform the submit handlers that a draft will be saved.
+   $form_state['save_draft'] = in_array($form_state['values']['op'], array($draft_op, '__AUTOSAVE__')) ||
+-                              ($node->webform['auto_save'] && !$form_state['values']['details']['finished'] && !$form_state['webform_completed'] && user_is_logged_in());
++                              ($node->webform['auto_save'] && !$form_state['values']['details']['finished'] && !$form_state['webform_completed']);
+ 
+   // Determine what we need to do on the next page.
+   if (!empty($form_state['save_draft']) || !$form_state['webform_completed']) {
+@@ -3283,6 +3365,10 @@ function webform_client_form_submit($form, &$form_state) {
+      $submission->highest_valid_page = end($form_state['clicked_button']['#parents']) == 'next' && $form_state['values']['op'] != '__AUTOSAVE__'
+                                           ? $form_state['webform']['page_num']
+                                           : $form_state['webform']['page_num'] - 1;
++    // If they're anonymous, save the session ID so we can tidy up later.
++    if (!$user->uid) {
++      $submission->session_id = session_id();
++    }
+   }
+ 
+   // If there is no data to be saved (such as on a multipage form with no fields
+@@ -3315,7 +3401,7 @@ function webform_client_form_submit($form, &$form_state) {
+ 
+     // Save session information about this submission for anonymous users,
+     // allowing them to access or edit their submissions.
+-    if (!$user->uid && user_access('access own webform submissions')) {
++    if (!$user->uid) {
+       $_SESSION['webform_submission'][$sid] = $node->nid;
+     }
+   }
+@@ -3345,40 +3431,46 @@ function webform_client_form_submit($form, &$form_state) {
+     // No redirect needed. No confirmation message needed.
+     $message = FALSE;
+   }
+-  elseif (!empty($form_state['values']['details']['finished'])) {
+-    $message = t('Submission updated.');
+-    $redirect = "node/{$node->nid}/submission/$sid";
+-  }
+-  elseif (!empty($node->webform['confirmation_block'])) {
+-    $message = FALSE;
+-    // Webform was submitted in a block and the confirmation message is to be
+-    // displayed in the block.
+-    $_SESSION['webform_confirmation'][$node->nid] = array(
+-      'sid' => $sid,
+-      'confirmation_page' => $redirect_url == '<confirmation>',
+-    );
+-    drupal_page_is_cacheable(FALSE);
+-  }
+-  elseif ($redirect_url == '<none>') {
+-    // No redirect needed. Show a confirmatin message if there is one.
+-  }
+-  elseif ($redirect_url == '<confirmation>') {
+-    // No confirmation message needed because it will be shown on the
+-    // confirmation page.
+-    $message = FALSE;
+-    $query = array('sid' => $sid);
+-    if ((int) $user->uid === 0) {
+-      $query['token'] = webform_get_submission_access_token($submission);
+-    }
+-    $redirect = array('node/' . $node->nid . '/done', array('query' => $query));
+-  }
+   else {
+-    // Clean up the redirect URL, filter it for tokens and detect external
+-    // domains. If the redirect is to an external URL, then don't show the
+-    // confirmation message.
+-    $redirect = webform_replace_url_tokens($redirect_url, $node, $submission);
+-    if ($redirect[1]['#webform_external']) {
++    // Clear _SESSION for anonymous user after submission.
++    if (isset($_SESSION['webform_submission'][$sid])) {
++      unset($_SESSION['webform_submission'][$sid]);
++    }
++    if (!empty($form_state['values']['details']['finished'])) {
++      $message = t('Submission updated.');
++      $redirect = "node/{$node->nid}/submission/$sid";
++    }
++    elseif (!empty($node->webform['confirmation_block'])) {
+       $message = FALSE;
++      // Webform was submitted in a block and the confirmation message is to be
++      // displayed in the block.
++      $_SESSION['webform_confirmation'][$node->nid] = array(
++        'sid' => $sid,
++        'confirmation_page' => $redirect_url == '<confirmation>',
++      );
++      drupal_page_is_cacheable(FALSE);
++    }
++    elseif ($redirect_url == '<none>') {
++      // No redirect needed. Show a confirmation message if there is one.
++    }
++    elseif ($redirect_url == '<confirmation>') {
++      // No confirmation message needed because it will be shown on the
++      // confirmation page.
++      $message = FALSE;
++      $query = array('sid' => $sid);
++      if ((int) $user->uid === 0) {
++        $query['token'] = webform_get_submission_access_token($submission);
++      }
++      $redirect = array('node/' . $node->nid . '/done', array('query' => $query));
++    }
++    else {
++      // Clean up the redirect URL, filter it for tokens and detect external
++      // domains. If the redirect is to an external URL, then don't show the
++      // confirmation message.
++      $redirect = webform_replace_url_tokens($redirect_url, $node, $submission);
++      if ($redirect[1]['#webform_external']) {
++        $message = FALSE;
++      }
+     }
+   }

@@ -1,0 +1,11 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: each_entry
+block_params: entry
+comment: 
+full_name: Gem::Package::TarReader#each
+is_singleton: false
+name: each
+params: () {|entry| ...}
+visibility: public

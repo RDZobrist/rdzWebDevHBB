@@ -1,0 +1,17 @@
+***************
+*** 3297,3303 ****
+  
+      // Save session information about this submission for anonymous users,
+      // allowing them to access or edit their submissions.
+-     if (!$user->uid && user_access('access own webform submissions')) {
+        $_SESSION['webform_submission'][$form_state['values']['details']['sid']] = $node->nid;
+      }
+    }
+--- 3313,3319 ----
+  
+      // Save session information about this submission for anonymous users,
+      // allowing them to access or edit their submissions.
++     if (!$user->uid) {
+        $_SESSION['webform_submission'][$form_state['values']['details']['sid']] = $node->nid;
+      }
+    }
